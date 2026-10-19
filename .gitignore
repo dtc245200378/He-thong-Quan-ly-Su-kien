@@ -1,0 +1,18 @@
+# Environment
+.env
+.env.*
+!.env.example
+
+# SSL
+nginx/ssl/
+
+# Database backups
+backups/
+
+# Backup files
+*.bak
+*.bak-*
+*.save
+
+# Dependencies
+node_modules/
