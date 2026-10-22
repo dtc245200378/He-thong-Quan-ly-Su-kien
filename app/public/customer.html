@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tài khoản khách hàng - Quản lý sự kiện</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <style>
+        body {
+            background: #f3f6fb;
+            font-family: Arial, sans-serif;
+        }
+        .navbar {
+            background: #17365d;
+        }
+        .auth-card {
+            max-width: 520px;
+            margin: 60px auto;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,.08);
+        }
+        .auth-card .card-body {
+            padding: 32px;
+        }
+        .btn-primary {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+        .form-control {
+            padding: 11px 14px;
+        }
+    </style>
+
+<style id="customer-theme-v2">
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --purple: #5145ec;
+    --purple-light: #8587f7;
+    --primary: #5145ec;
+    --text: #1e293b;
+    --background: #f3f4f8;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+}
+
+/* Thanh menu đồng bộ trang chủ */
+.navbar {
+    background: linear-gradient(105deg, #5145ec 0%, #8187f6 100%) !important;
+    min-height: 88px;
+    padding: 18px 32px !important;
+    box-shadow: 0 3px 12px rgba(49, 46, 129, 0.12);
+}
+
+.navbar-brand {
+    color: #ffffff !important;
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.navbar .btn-outline-light {
+    background: #ffffff;
+    color: #4338ca;
+    border: none;
+    border-radius: 999px;
+    font-weight: 700;
+    padding: 11px 22px;
+}
+
+.navbar .btn-outline-light:hover {
+    background: #eef2ff;
+    color: #3730a3;
+}
+
+/* Thẻ tài khoản */
+.auth-card {
+    max-width: 680px;
+    margin: 65px auto;
+    border: 0;
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+}
+
+.auth-card .card-body {
+    padding: 44px 42px;
+}
+
+#form-title {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.7px;
+    color: #111827;
+}
+
+.auth-card .text-muted {
+    color: #64748b !important;
+}
+
+/* Ô nhập */
+.form-label {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.form-control {
+    min-height: 51px;
+    border: 1px solid #dbe2ec;
+    border-radius: 11px;
+    background: #ffffff;
+    padding: 12px 15px;
+    font-family: inherit;
+}
+
+.form-control:focus {
+    border-color: #635bff;
+    box-shadow: 0 0 0 4px rgba(99, 91, 255, 0.12);
+}
+
+/* Nút chính */
+.btn-primary {
+    background: linear-gradient(100deg, #5145ec, #626cf4);
+    border: none;
+    border-radius: 12px;
+    min-height: 50px;
+    font-weight: 700;
+    box-shadow: 0 5px 12px rgba(81, 69, 236, 0.16);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(100deg, #4338ca, #5145ec);
+}
+
+a:not(.navbar-brand):not(.btn) {
+    color: #5145ec;
+    font-weight: 600;
+}
+
+/* Thông tin tài khoản */
+#profile-section .fs-1 {
+    color: #5145ec;
+    font-size: 50px !important;
+}
+
+#profile-section h4 {
+    color: #111827;
+    font-size: 25px;
+}
+
+#profile-section dl {
+    margin-top: 28px;
+    margin-bottom: 30px;
+}
+
+#profile-section dt {
+    font-weight: 700;
+    color: #1f2937;
+}
+
+#profile-section dd {
+    color: #334155;
+    overflow-wrap: anywhere;
+}
+
+#logout-btn {
+    min-height: 49px;
+    border: 1.5px solid #f87171;
+    color: #ef4444;
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+#logout-btn:hover {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+/* Thông báo */
+.alert {
+    border-radius: 12px;
+    padding: 14px 17px;
+}
+
+/* Điện thoại */
+@media (max-width: 768px) {
+    .navbar {
+        min-height: 72px;
+        padding: 15px !important;
+    }
+
+    .navbar-brand {
+        font-size: 17px;
+    }
+
+    .navbar .btn-outline-light {
+        padding: 9px 12px;
+        font-size: 13px;
+    }
+
+    .auth-card {
+        margin: 28px auto;
+        border-radius: 17px;
+    }
+
+    .auth-card .card-body {
+        padding: 28px 22px;
+    }
+
+    #form-title {
+        font-size: 25px;
+    }
+}
+</style>
+
+
+<style id="customer-admin-style">
+:root {
+    --auth-bg: #090f21;
+    --auth-card: #11182c;
+    --auth-border: #28324c;
+    --auth-input: #1e293b;
+    --auth-purple: #5145e9;
+    --auth-cyan: #0ea5cf;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 12% 30%, #252455 0%, transparent 38%),
+        linear-gradient(120deg, #121a36, #070d1c) !important;
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    color: #f8fafc;
+}
+
+/* Navbar */
+.navbar {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.navbar-brand {
+    font-size: 19px !important;
+}
+
+.navbar .btn-outline-light {
+    background: transparent;
+    color: #cbd5e1;
+    border: 1px solid #475569;
+}
+
+/* Card đăng nhập */
+.auth-card {
+    max-width: 480px;
+    margin: 50px auto;
+    background: rgba(17,24,44,.96);
+    border: 1px solid var(--auth-border);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+
+.auth-card .card-body {
+    padding: 42px;
+}
+
+#form-title {
+    color: #fff;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.auth-card .text-muted {
+    color: #7c8ba3 !important;
+}
+
+/* Form */
+.form-label {
+    color: #e2e8f0;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.form-control {
+    background: var(--auth-input);
+    border: 1px solid #334155;
+    color: #fff;
+    border-radius: 12px;
+    min-height: 50px;
+}
+
+.form-control:focus {
+    background: var(--auth-input);
+    color: #fff;
+    border-color: #7772ff;
+    box-shadow: 0 0 0 4px rgba(99,102,241,.18);
+}
+
+.form-control::placeholder {
+    color: #94a3b8;
+}
+
+/* Nút */
+.btn-primary {
+    background: linear-gradient(100deg, var(--auth-purple), var(--auth-cyan));
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    min-height: 52px;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.12);
+}
+
+#login-section p,
+#register-section p {
+    color: #94a3b8;
+}
+
+#login-section a,
+#register-section a {
+    color: #a5b4fc !important;
+}
+
+/* Trang tài khoản */
+#profile-section {
+    color: #f8fafc;
+}
+
+#profile-section h4,
+#profile-section dt,
+#profile-section dd {
+    color: #f8fafc !important;
+}
+
+#profile-section .fs-1 {
+    color: #a78bfa;
+}
+
+#logout-btn {
+    border-color: #f87171;
+    color: #f87171;
+}
+
+@media(max-width:576px) {
+    .auth-card {
+        margin: 24px auto;
+    }
+    .auth-card .card-body {
+        padding: 30px 22px;
+    }
+}
+</style>
+
+</head>
+<body>
+<nav class="navbar navbar-dark px-4 py-3">
+    <a class="navbar-brand fw-bold" href="/">
+        📅 HỆ THỐNG SỰ KIỆN 2026
+    </a>
+    <a class="btn btn-outline-light btn-sm" href="/">
+        Trang chủ
+    </a>
+</nav>
+
+<main class="container">
+    <div class="card auth-card">
+        <div class="card-body">
+            <h3 class="text-center fw-bold mb-2" id="form-title">
+                Đăng nhập khách hàng
+            </h3>
+            <p class="text-center text-muted mb-4">
+                Quản lý tài khoản và thông tin tham gia sự kiện
+            </p>
+
+            <div id="message" class="alert d-none" role="alert"></div>
+
+            <section id="login-section">
+                <form id="login-form">
+                    <div class="mb-3">
+                        <label for="login-email" class="form-label">Email</label>
+                        <input id="login-email" type="email"
+                               class="form-control" required autocomplete="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="login-password" class="form-label">Mật khẩu</label>
+                        <input id="login-password" type="password"
+                               class="form-control" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        Đăng nhập
+                    </button>
+                </form>
+                <p class="text-center mt-4">
+                    Chưa có tài khoản?
+                    <a href="#" id="show-register">Đăng ký ngay</a>
+                </p>
+            </section>
+
+            <section id="register-section" hidden>
+                <form id="register-form">
+                    <div class="mb-3">
+                        <label for="register-name" class="form-label">Họ và tên</label>
+                        <input id="register-name" class="form-control"
+                               required minlength="2" maxlength="255"
+                               autocomplete="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="register-email" class="form-label">Email</label>
+                        <input id="register-email" type="email"
+                               class="form-control" required maxlength="255"
+                               autocomplete="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="register-password" class="form-label">Mật khẩu</label>
+                        <input id="register-password" type="password"
+                               class="form-control" required minlength="12"
+                               maxlength="72" autocomplete="new-password">
+                        <div class="form-text">
+                            Mật khẩu từ 12 đến 72 ký tự.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="register-confirm" class="form-label">
+                            Xác nhận mật khẩu
+                        </label>
+                        <input id="register-confirm" type="password"
+                               class="form-control" required minlength="12"
+                               autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        Tạo tài khoản
+                    </button>
+                </form>
+                <p class="text-center mt-4">
+                    Đã có tài khoản?
+                    <a href="#" id="show-login">Đăng nhập</a>
+                </p>
+            </section>
+
+            <section id="profile-section" hidden>
+                <div class="text-center mb-4">
+                    <div class="fs-1">👤</div>
+                    <h4 class="fw-bold">Tài khoản của tôi</h4>
+                </div>
+                <dl class="row">
+                    <dt class="col-sm-4">Họ và tên</dt>
+                    <dd class="col-sm-8" id="profile-name"></dd>
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8" id="profile-email"></dd>
+                </dl>
+                <button id="logout-btn" class="btn btn-outline-danger w-100">
+                    Đăng xuất
+                </button>
+            </section>
+        </div>
+    </div>
+</main>
+
+<script>
+const API = '/api/customer';
+const loginSection = document.getElementById('login-section');
+const registerSection = document.getElementById('register-section');
+const profileSection = document.getElementById('profile-section');
+const title = document.getElementById('form-title');
+const message = document.getElementById('message');
+
+function notify(text, success = false) {
+    message.textContent = text;
+    message.className = 'alert ' +
+        (success ? 'alert-success' : 'alert-danger');
+}
+
+function clearMessage() {
+    message.className = 'alert d-none';
+    message.textContent = '';
+}
+
+function show(section) {
+    loginSection.hidden = section !== 'login';
+    registerSection.hidden = section !== 'register';
+    profileSection.hidden = section !== 'profile';
+
+    title.textContent = section === 'login'
+        ? 'Đăng nhập khách hàng'
+        : section === 'register'
+        ? 'Đăng ký khách hàng'
+        : 'Thông tin tài khoản';
+
+    clearMessage();
+}
+
+async function apiRequest(path, options = {}) {
+    const response = await fetch(API + path, {
+        credentials: 'same-origin',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...(options.headers || {})
+        }
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+        throw new Error(result.error || 'Có lỗi xảy ra.');
+    }
+
+    return result;
+}
+
+document.getElementById('show-register').addEventListener('click', event => {
+    event.preventDefault();
+    show('register');
+});
+
+document.getElementById('show-login').addEventListener('click', event => {
+    event.preventDefault();
+    show('login');
+});
+
+document.getElementById('register-form').addEventListener('submit', async event => {
+    event.preventDefault();
+
+    const fullName = document.getElementById('register-name').value.trim();
+    const email = document.getElementById('register-email').value.trim();
+    const password = document.getElementById('register-password').value;
+    const confirm = document.getElementById('register-confirm').value;
+
+    if (password !== confirm) {
+        notify('Mật khẩu xác nhận không khớp.');
+        return;
+    }
+
+    try {
+        await apiRequest('/register', {
+            method: 'POST',
+            body: JSON.stringify({ fullName, email, password })
+        });
+
+        document.getElementById('register-form').reset();
+        show('login');
+        document.getElementById('login-email').value = email;
+        notify('Đăng ký thành công! Vui lòng đăng nhập.', true);
+    } catch (error) {
+        notify(error.message);
+    }
+});
+
+document.getElementById('login-form').addEventListener('submit', async event => {
+    event.preventDefault();
+
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+
+    try {
+        await apiRequest('/login', {
+            method: 'POST',
+            body: JSON.stringify({ email, password })
+        });
+
+        document.getElementById('login-form').reset();
+        window.location.assign('/customer-dashboard.html');
+    } catch (error) {
+        notify(error.message);
+    }
+});
+
+async function loadProfile() {
+    try {
+        const response = await apiRequest('/me');
+
+        show('profile');
+        document.getElementById('profile-name').textContent =
+            response.user.full_name;
+        document.getElementById('profile-email').textContent =
+            response.user.email;
+    } catch {
+        show('login');
+    }
+}
+
+document.getElementById('logout-btn').addEventListener('click', async () => {
+    try {
+        await apiRequest('/logout', {
+            method: 'POST',
+            body: JSON.stringify({})
+        });
+        show('login');
+        notify('Bạn đã đăng xuất thành công.', true);
+    } catch (error) {
+        notify(error.message);
+    }
+});
+
+loadProfile();
+</script>
+</body>
+</html>

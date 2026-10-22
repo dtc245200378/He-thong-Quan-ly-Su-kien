@@ -16,3 +16,6 @@ backups/
 
 # Dependencies
 node_modules/
+
+# Local test secrets
+.local/

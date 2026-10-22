@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const express = require('express');
 const { randomUUID } = require('crypto');
 const { pool } = require('../db');
@@ -72,6 +73,55 @@ router.post('/registrations', checkRateLimit, async (req, res) => {
             success: false,
             error: 'Số điện thoại không hợp lệ (8 - 20 chữ số).'
         });
+    }
+
+    // CUSTOMER_TICKET_LINK_V1
+    // Khách đăng nhập được liên kết vé; khách vãng lai vẫn đăng ký được.
+    let customerId = null;
+    const customerToken = req.cookies?.customer_token;
+
+    if (customerToken) {
+        let decoded;
+
+        try {
+            decoded = jwt.verify(
+                customerToken,
+                process.env.CUSTOMER_JWT_SECRET,
+                {
+                    algorithms: ['HS256'],
+                    audience: 'customer',
+                    issuer: 'event-management-customer'
+                }
+            );
+            if (decoded.type !== 'customer') throw new Error('Invalid token type');
+        } catch {
+            return res.status(401).json({
+                success: false,
+                error: 'Phiên khách hàng hết hạn. Vui lòng đăng nhập lại.'
+            });
+        }
+
+        const customer = await pool.query(
+            `SELECT id, email FROM customer_users
+             WHERE id = $1 AND is_active = TRUE`,
+            [decoded.sub]
+        ).catch(() => null);
+
+        if (!customer || customer.rowCount !== 1) {
+            return res.status(401).json({
+                success: false,
+                error: 'Tài khoản khách hàng không hợp lệ.'
+            });
+        }
+
+        if (customer.rows[0].email.toLowerCase() !== mail) {
+            return res.status(403).json({
+                success: false,
+                error: 'Email đăng ký vé phải trùng email tài khoản đang đăng nhập.'
+            });
+        }
+
+        customerId = customer.rows[0].id;
     }
 
     let client;
@@ -158,10 +208,10 @@ router.post('/registrations', checkRateLimit, async (req, res) => {
         // 6. Thêm bản ghi người tham dự
         const attendeeRes = await client.query(
             `INSERT INTO attendees
-             (event_id, full_name, email, phone, organization, status)
-             VALUES ($1, $2, $3, $4, $5, 'confirmed')
+             (event_id, full_name, email, phone, organization, status, customer_user_id)
+             VALUES ($1, $2, $3, $4, $5, 'confirmed', $6)
              RETURNING id, full_name, email, phone, organization, created_at`,
-            [id, name, mail, tel || null, org || null]
+            [id, name, mail, tel || null, org || null, customerId]
         );
 
         const attendeeId = attendeeRes.rows[0].id;

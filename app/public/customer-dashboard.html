@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tổng Quan Khách Hàng - Hệ Thống Sự Kiện</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+    --navy:#0f172a;
+    --purple:#5145ec;
+    --bg:#f3f4f6;
+}
+* {box-sizing:border-box}
+body {
+    margin:0;
+    font-family:'Plus Jakarta Sans',Arial,sans-serif;
+    background:var(--bg);
+    color:#1e293b;
+}
+.sidebar {
+    position:fixed;
+    top:0;left:0;bottom:0;
+    width:260px;
+    background:#0f172a;
+    color:#94a3b8;
+    display:flex;
+    flex-direction:column;
+}
+.brand {
+    padding:25px 18px;
+    border-bottom:1px solid #263249;
+    color:white;
+    font-size:17px;
+    font-weight:800;
+}
+.brand i {
+    background:linear-gradient(135deg,#5145ec,#06b6d4);
+    padding:13px;
+    border-radius:12px;
+    margin-right:8px;
+}
+.menu-title {
+    margin:28px 18px 12px;
+    font-size:11px;
+    font-weight:800;
+    color:#64748b;
+}
+.menu-item {
+    margin:3px 12px;
+    padding:14px;
+    border-radius:10px;
+    color:#94a3b8;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    border:0;
+    background:transparent;
+    text-align:left;
+}
+.menu-item i {width:26px}
+.menu-item:hover {background:#1e293b;color:white}
+.menu-item.active {
+    background:#5145ec;
+    color:white;
+}
+.sidebar-user {
+    margin-top:auto;
+    border-top:1px solid #263249;
+    padding:19px;
+    color:white;
+    font-size:13px;
+}
+.sidebar-user small {
+    display:block;
+    margin-top:5px;
+    color:#94a3b8;
+}
+.content {margin-left:260px;min-height:100vh}
+.topbar {
+    min-height:76px;
+    background:white;
+    padding:20px 30px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    border-bottom:1px solid #e2e8f0;
+}
+.topbar h2 {margin:0;font-size:20px}
+.top-actions {display:flex;gap:10px;flex-wrap:wrap}
+.btn {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border-radius:24px;
+    padding:11px 17px;
+    text-decoration:none;
+    font-family:inherit;
+    font-weight:700;
+    font-size:12px;
+    cursor:pointer;
+}
+.btn-outline {border:1px solid #2563eb;color:#2563eb;background:white}
+.btn-primary {border:1px solid #2563eb;background:#2563eb;color:white}
+.btn-danger {border:1px solid #f87171;color:#ef4444;background:white}
+.main {padding:30px}
+.cards {
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:18px;
+}
+.card {
+    background:white;
+    border-radius:17px;
+    padding:22px;
+    box-shadow:0 3px 9px rgba(0,0,0,.05);
+}
+.stat {border-left:4px solid #2563eb}
+.stat:nth-child(2) {border-color:#06b6d4}
+.stat:nth-child(3) {border-color:#16a34a}
+.stat .label {font-size:13px;color:#64748b;font-weight:700}
+.stat .value {font-size:28px;font-weight:800;margin-top:9px}
+.panel {margin-top:24px}
+.panel h3 {margin:0 0 17px;font-size:17px}
+.detail {display:grid;grid-template-columns:180px 1fr;gap:16px;margin:12px 0}
+.muted {color:#64748b}
+[hidden] {display:none!important}
+@media(max-width:900px) {
+    .sidebar {position:static;width:100%}
+    .content {margin-left:0}
+    .cards {grid-template-columns:1fr}
+    .topbar {flex-wrap:wrap;padding:16px}
+    .main {padding:16px}
+}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+    <div class="brand"><i class="fa-solid fa-calendar-days"></i> EVENT CUSTOMER</div>
+
+    <div class="menu-title">CHỨC NĂNG CHÍNH</div>
+
+    <button class="menu-item active" data-view="overview">
+        <i class="fa-solid fa-chart-line"></i> Tổng Quan Tài Khoản
+    </button>
+    <button class="menu-item" data-view="tickets">
+        <i class="fa-solid fa-ticket"></i> Vé Của Tôi
+    </button>
+    <button class="menu-item" data-view="profile">
+        <i class="fa-solid fa-user"></i> Thông Tin Cá Nhân
+    </button>
+
+    <div class="menu-title">HỆ THỐNG</div>
+    <a class="menu-item" href="/">
+        <i class="fa-solid fa-house"></i> Trang Chủ Sự Kiện
+    </a>
+    <button class="menu-item" id="sidebar-logout">
+        <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
+    </button>
+
+    <div class="sidebar-user">
+        <strong id="sidebar-name">Khách hàng</strong>
+        <small>TÀI KHOẢN KHÁCH HÀNG</small>
+    </div>
+</aside>
+
+<div class="content">
+    <header class="topbar">
+        <h2 id="page-heading">Tổng Quan Khách Hàng</h2>
+        <div class="top-actions">
+            <a class="btn btn-outline" href="/">
+                <i class="fa-solid fa-globe"></i> Trang Sự Kiện
+            </a>
+            <button class="btn btn-danger" id="top-logout">
+                <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
+            </button>
+        </div>
+    </header>
+
+    <main class="main">
+        <p id="page-error" style="color:#dc2626" hidden></p>
+
+        <section id="overview-view">
+            <div class="cards">
+                <div class="card stat">
+                    <div class="label">TỔNG VÉ CỦA TÔI</div>
+                    <div class="value">—</div>
+                    <div class="muted">Chờ tích hợp API vé</div>
+                </div>
+                <div class="card stat">
+                    <div class="label">SỰ KIỆN ĐÃ ĐĂNG KÝ</div>
+                    <div class="value">—</div>
+                    <div class="muted">Chờ tích hợp API vé</div>
+                </div>
+                <div class="card stat">
+                    <div class="label">VÉ ĐÃ CHECK-IN</div>
+                    <div class="value">—</div>
+                    <div class="muted">Chờ tích hợp API vé</div>
+                </div>
+            </div>
+
+            <div class="card panel">
+                <h3><i class="fa-solid fa-user-circle"></i> Thông Tin Tài Khoản</h3>
+                <div class="detail"><strong>Họ và tên</strong><span class="customer-name"></span></div>
+                <div class="detail"><strong>Email</strong><span class="customer-email"></span></div>
+            </div>
+        </section>
+
+        <section id="tickets-view" hidden>
+            <div class="card">
+                <h3><i class="fa-solid fa-ticket"></i> Vé Của Tôi</h3>
+                <p class="muted">
+                    Chức năng xem vé đang được phát triển.
+                    Chưa hiển thị dữ liệu cho đến khi API xác minh quyền sở hữu vé được hoàn thành.
+                </p>
+                <a href="/" class="btn btn-primary">Xem Danh Sách Sự Kiện</a>
+            </div>
+        </section>
+
+        <section id="profile-view" hidden>
+            <div class="card">
+                <h3><i class="fa-solid fa-id-card"></i> Thông Tin Cá Nhân</h3>
+                <div class="detail"><strong>Họ và tên</strong><span class="customer-name"></span></div>
+                <div class="detail"><strong>Email</strong><span class="customer-email"></span></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+const views = {
+    overview: 'Tổng Quan Khách Hàng',
+    tickets: 'Vé Của Tôi',
+    profile: 'Thông Tin Cá Nhân'
+};
+
+function showView(view) {
+    if (!Object.hasOwn(views, view)) return;
+    for (const key of Object.keys(views)) {
+        document.getElementById(key + '-view').hidden = key !== view;
+    }
+    document.getElementById('page-heading').textContent = views[view];
+    document.querySelectorAll('[data-view]').forEach(el => {
+        el.classList.toggle('active', el.dataset.view === view);
+    });
+}
+
+document.querySelectorAll('[data-view]').forEach(el => {
+    el.addEventListener('click', () => showView(el.dataset.view));
+});
+
+async function loadCustomer() {
+    try {
+        const response = await fetch('/api/customer/me', {
+            credentials: 'same-origin',
+            cache: 'no-store'
+        });
+
+        if (response.status === 401) {
+            location.replace('/customer.html');
+            return;
+        }
+        if (!response.ok) throw new Error('Không thể tải thông tin tài khoản.');
+
+        const result = await response.json();
+        const user = result.user;
+
+        document.getElementById('sidebar-name').textContent = user.full_name;
+        document.querySelectorAll('.customer-name').forEach(el => {
+            el.textContent = user.full_name;
+        });
+        document.querySelectorAll('.customer-email').forEach(el => {
+            el.textContent = user.email;
+        });
+    } catch {
+        const error = document.getElementById('page-error');
+        error.textContent = 'Không thể tải dữ liệu. Vui lòng thử lại.';
+        error.hidden = false;
+        document.getElementById('overview-view').hidden = true;
+    }
+}
+
+async function logout() {
+    try {
+        const response = await fetch('/api/customer/logout', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {'Content-Type':'application/json'},
+            body: '{}'
+        });
+        if (!response.ok) throw new Error();
+        location.replace('/customer.html');
+    } catch {
+        alert('Không thể đăng xuất. Vui lòng thử lại.');
+    }
+}
+
+document.getElementById('sidebar-logout').addEventListener('click', logout);
+document.getElementById('top-logout').addEventListener('click', logout);
+
+loadCustomer();
+</script>
+</body>
+</html>

@@ -16,8 +16,17 @@ const adminReportsRouter = require('./routes/adminReports');
 
 // Import router đăng ký & tra cứu công khai cho khách hàng
 const publicRegistrationRouter = require('./routes/publicRegistration');
+const customerAuthRouter = require('./routes/customerAuth');
 
 const app = express();
+
+// CUSTOMER_TRUST_PROXY_V1
+// Chỉ bật khi ứng dụng chạy sau reverse proxy đáng tin cậy.
+// Nginx phải ghi đè các header X-Forwarded-*.
+if (process.env.TRUST_PROXY === 'true') {
+    app.set('trust proxy', 1);
+}
+
 const port = process.env.PORT || 3000;
 
 // Bảo mật tiêu chuẩn
@@ -81,6 +90,7 @@ app.use('/api/admin', adminReportsRouter);
 
 // Gắn API công khai cho khách hàng (Đăng ký vé, Tra cứu vé QR)
 app.use('/api/public', publicRegistrationRouter);
+app.use('/api/customer', customerAuthRouter);
 
 // ==========================================
 // CÁC ĐƯỜNG DẪN GIAO DIỆN ADMIN (HTML PAGES)
