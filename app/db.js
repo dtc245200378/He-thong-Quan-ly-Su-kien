@@ -46,21 +46,7 @@ const runMigrations = async () => {
             ALTER TABLE events ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW();
         `);
 
-        // Cập nhật thông tin chi tiết cho 4 sự kiện mặc định nếu chưa có mô tả/địa điểm
-        await client.query(`
-            UPDATE events
-            SET location = COALESCE(NULLIF(location, ''), 'Trung tâm Đổi mới Sáng tạo Quốc gia (NIC)'),
-                event_time = COALESCE(NULLIF(event_time, ''), '09:00'),
-                description = COALESCE(NULLIF(description, ''), 'Sự kiện chuyên sâu cập nhật xu hướng công nghệ hàng đầu năm 2026, quy tụ các diễn giả và chuyên gia uy tín trong ngành.'),
-                image_url = CASE
-                    WHEN id = 1 THEN 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800'
-                    WHEN id = 2 THEN 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800'
-                    WHEN id = 3 THEN 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800'
-                    WHEN id = 4 THEN 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800'
-                    ELSE COALESCE(NULLIF(image_url, ''), 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800')
-                END
-            WHERE description IS NULL OR description = '';
-        `);
+        // Giữ nguyên dữ liệu sự kiện hiện có.
 
         // 2. Bảng quản trị viên (admin_users)
         await client.query(`
