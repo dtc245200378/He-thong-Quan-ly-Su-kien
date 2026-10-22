@@ -125,45 +125,566 @@
             color: #ffffff;
         }
     </style>
+
+<style id="customer-navbar-layout-fix">
+/* Tối ưu thanh điều hướng */
+@media (min-width: 1200px) {
+    .navbar-main > .container {
+        max-width: 1540px;
+        width: 96%;
+    }
+
+    .navbar-main .navbar-brand {
+        font-size: 1.45rem !important;
+        white-space: nowrap;
+        margin-right: 1.5rem;
+    }
+
+    .navbar-main .navbar-nav {
+        gap: 0.45rem !important;
+    }
+
+    .navbar-main .nav-link {
+        font-size: 0.82rem;
+        white-space: nowrap;
+        padding-left: 0.35rem;
+        padding-right: 0.35rem;
+    }
+
+    .navbar-main .navbar-nav .btn {
+        font-size: 0.82rem;
+        white-space: nowrap;
+        padding: 0.55rem 0.8rem !important;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .navbar-main .navbar-brand {
+        font-size: 1.15rem !important;
+    }
+
+    .navbar-main .nav-link,
+    .navbar-main .navbar-nav .btn {
+        font-size: 0.76rem;
+    }
+}
+</style>
+
+
+<style id="customer-left-sidebar">
+@media (min-width: 992px) {
+    body {
+        padding-left: 260px;
+    }
+
+    .navbar-main {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 260px;
+        height: 100vh;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #0f172a !important;
+        overflow-y: auto;
+        z-index: 1030;
+        align-items: stretch;
+    }
+
+    .navbar-main > .container {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .navbar-main .navbar-brand {
+        display: block;
+        width: 100%;
+        padding: 26px 16px;
+        margin: 0 !important;
+        border-bottom: 1px solid #263249;
+        font-size: 17px !important;
+        white-space: normal;
+    }
+
+    .navbar-main .navbar-collapse {
+        display: block !important;
+        width: 100%;
+    }
+
+    .navbar-main .navbar-nav {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        width: 100%;
+        margin: 0 !important;
+        padding: 22px 12px;
+    }
+
+    .navbar-main .nav-item {
+        width: 100%;
+    }
+
+    .navbar-main .nav-link {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 14px 13px !important;
+        border-radius: 10px;
+        color: #cbd5e1 !important;
+        font-size: 13px;
+        font-weight: 700;
+        white-space: normal;
+        text-decoration: none;
+    }
+
+    .navbar-main .nav-link:hover,
+    .navbar-main .nav-link.active {
+        background: #5145ec;
+        color: white !important;
+    }
+
+    body > .container {
+        width: 100%;
+        max-width: 100% !important;
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .navbar-main {
+        position: relative;
+    }
+}
+</style>
+
+
+<style id="admin-font-alignment">
+/* Cùng font với hệ thống Admin */
+body,
+button,
+input,
+select,
+textarea {
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+}
+
+/* Sidebar có kích thước tương đương Admin */
+@media (min-width: 992px) {
+    .navbar-main .nav-link {
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        line-height: 1.5;
+    }
+
+    .navbar-main .navbar-brand {
+        font-size: 16px !important;
+        font-weight: 800 !important;
+    }
+}
+
+/* Tiêu đề nội dung */
+h1, h2, h3, h4, h5 {
+    font-weight: 700;
+    letter-spacing: -0.35px;
+}
+</style>
+
+
+<style id="sidebar-vietnamese-purple-theme">
+
+:root {
+    --primary-color: #4f46e5;
+    --secondary-color: #818cf8;
+    --bg-color: #f3f4f6;
+    --dark-header: #1e293b;
+}
+
+/* Font đồng nhất trang chủ và Admin */
+body,
+button,
+input,
+select,
+textarea,
+.navbar-main {
+    font-family: 'Plus Jakarta Sans', 'Inter',
+                 system-ui, sans-serif !important;
+}
+
+@media (min-width: 992px) {
+
+    /* Sidebar trái */
+    .navbar-main {
+        background: linear-gradient(
+            155deg,
+            #4f46e5 0%,
+            #6366f1 54%,
+            #818cf8 100%
+        ) !important;
+        box-shadow: 4px 0 18px rgba(79,70,229,.15);
+    }
+
+    /* Tiêu đề tiếng Việt */
+    .navbar-main .navbar-brand {
+        font-size: 16px !important;
+        font-weight: 800 !important;
+        line-height: 1.5;
+        color: #ffffff !important;
+        padding: 24px 16px !important;
+        border-bottom: 1px solid rgba(255,255,255,.22);
+        white-space: normal !important;
+    }
+
+    /* Các mục chức năng */
+    .navbar-main .nav-link {
+        color: #ffffff !important;
+        background: transparent;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        line-height: 1.5;
+        border-radius: 11px !important;
+        padding: 14px 13px !important;
+        transition: background .2s ease;
+    }
+
+    .navbar-main .nav-link:hover {
+        background: rgba(255,255,255,.19) !important;
+        color: #ffffff !important;
+    }
+
+    /* Mục đang được chọn */
+    .navbar-main .nav-link.active,
+    .navbar-main .nav-link.active:hover {
+        background: #3730a3 !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 12px rgba(30,27,75,.18);
+    }
+
+    /* Nội dung bên phải */
+    body {
+        background-color: #f3f4f6 !important;
+        color: #1e293b;
+    }
+
+    .card-stats {
+        background: white;
+        border-radius: 14px;
+    }
+
+    .table-custom thead th {
+        background-color: #1e293b !important;
+        color: white !important;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .navbar-main {
+        background: linear-gradient(
+            135deg,
+            #4f46e5,
+            #818cf8
+        ) !important;
+    }
+}
+</style>
+
+
+<style id="compact-admin-layout">
+
+/* Phông chữ giống Web Admin */
+body, button, input, select, textarea {
+    font-family: 'Plus Jakarta Sans', 'Inter',
+                 system-ui, sans-serif !important;
+}
+
+@media (min-width: 992px) {
+
+    /* Sidebar nhỏ giống Web Admin */
+    body {
+        padding-left: 250px !important;
+        font-size: 13px !important;
+    }
+
+    .navbar-main {
+        width: 250px !important;
+    }
+
+    .navbar-main .navbar-brand {
+        font-size: 14px !important;
+        padding: 21px 14px !important;
+    }
+
+    .navbar-main .navbar-nav {
+        padding: 17px 10px !important;
+        gap: 3px !important;
+    }
+
+    .navbar-main .nav-link {
+        font-size: 12px !important;
+        padding: 11px 12px !important;
+        border-radius: 9px !important;
+        line-height: 1.4 !important;
+    }
+
+    .navbar-main .nav-link i {
+        font-size: 13px !important;
+    }
+
+    /* Nội dung giống Dashboard Admin */
+    body > .container {
+        padding-left: 24px !important;
+        padding-right: 24px !important;
+    }
+
+    /* Ô thống kê */
+    .card-stats {
+        padding: 15px !important;
+        border-radius: 13px !important;
+    }
+
+    .card-stats .text-muted {
+        font-size: 11px !important;
+    }
+
+    .card-stats h3,
+    .card-stats h2 {
+        font-size: 23px !important;
+        margin-top: 5px !important;
+    }
+
+    /* Tab, nút chức năng */
+    .nav-pills-custom .nav-link {
+        font-size: 12px !important;
+        padding: 9px 14px !important;
+    }
+
+    .btn {
+        font-size: 12px !important;
+    }
+
+    /* Ô tìm kiếm */
+    .form-control,
+    .form-select {
+        font-size: 12px !important;
+        padding: 9px 12px !important;
+    }
+
+    /* Tiêu đề */
+    h3 {
+        font-size: 19px !important;
+    }
+
+    h4, h5 {
+        font-size: 16px !important;
+    }
+
+    /* Bảng danh sách sự kiện */
+    .table-custom thead th {
+        font-size: 11px !important;
+        padding: 12px 13px !important;
+    }
+
+    .table-custom tbody td {
+        font-size: 12px !important;
+        padding: 12px 13px !important;
+    }
+
+    .badge-status {
+        font-size: 10px !important;
+        padding: 5px 10px !important;
+    }
+}
+
+</style>
+
 </head>
 <body>
+
     <!-- Navbar Header -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-main py-3 mb-4">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-3 text-uppercase d-flex align-items-center tracking-wide" href="/">
-                <i class="fa-solid fa-calendar-days me-2"></i> Hệ Thống Sự Kiện 2026
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fa-solid fa-calendar-days me-2"></i>
+                HỆ THỐNG QUẢN LÝ SỰ KIỆN
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-2">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
                     <li class="nav-item">
-                        <a class="nav-link text-white fw-semibold active" href="#" onclick="switchMainTab('events'); return false;">
-                            <i class="fa-solid fa-list-ul me-1"></i> Danh Sách Sự Kiện
+                        <a class="nav-link active" href="#"
+                           onclick="showCustomerEvents(); switchMainTab('events'); return false;">
+                            <i class="fa-solid fa-list-ul me-2"></i>
+                            Danh Sách Sự Kiện
                         </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link text-white fw-semibold" href="#" onclick="switchMainTab('lookup'); return false;">
-                            <i class="fa-solid fa-magnifying-glass me-1"></i> Tra Cứu Vé QR
+                        <a class="nav-link" href="#"
+                           onclick="switchMainTab('lookup'); return false;">
+                            <i class="fa-solid fa-magnifying-glass me-2"></i>
+                            Tra Cứu Vé QR
                         </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link text-white fw-semibold" href="#" onclick="switchMainTab('checkin'); return false;">
-                            <i class="fa-solid fa-qrcode me-1"></i> Soát Vé Nhân Viên
+                        <a class="nav-link" href="#"
+                           onclick="switchMainTab('checkin'); return false;">
+                            <i class="fa-solid fa-qrcode me-2"></i>
+                            Soát Vé Nhân Viên
                         </a>
                     </li>
-                    <li class="nav-item ms-lg-2">
-                        <a class="btn btn-light text-primary fw-bold rounded-pill px-3 py-2 shadow-sm" href="/admin/login">
-                            <i class="fa-solid fa-shield-halved me-1"></i> Cổng Quản Trị
+
+                    <li class="nav-item">
+                        <a id="customer-account-link"
+                           class="nav-link"
+                           href="#" onclick="showCustomerAccount(); return false;">
+                            <i class="fa-solid fa-user me-2"></i>
+                            <span id="customer-account-label">
+                                Đăng nhập / Đăng ký
+                            </span>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a id="customer-tickets-link"
+   class="nav-link"
+   href="#"
+   onclick="showCustomerTickets(); return false;">
+    <i class="fa-solid fa-ticket me-2"></i>
+    Vé Của Tôi
+</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/login">
+                            <i class="fa-solid fa-shield-halved me-2"></i>
+                            Cổng Quản Trị
+                        </a>
+                    </li>
+
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container pb-5">
+
+
+<div id="inline-customer-tickets"
+     class="container-fluid px-4 py-4"
+     hidden>
+
+    <h3 class="fw-bold mb-4">
+        <i class="fa-solid fa-ticket text-primary me-2"></i>
+        Vé Của Tôi
+    </h3>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card card-stats p-4 border-start border-4 border-primary">
+                <div class="text-muted fw-semibold">TỔNG VÉ CỦA TÔI</div>
+                <h2>—</h2>
+                <small class="text-muted">Chờ API vé khách hàng</small>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card card-stats p-4 border-start border-4 border-info">
+                <div class="text-muted fw-semibold">VÉ CÒN HIỆU LỰC</div>
+                <h2>—</h2>
+                <small class="text-muted">Chờ API vé khách hàng</small>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card card-stats p-4 border-start border-4 border-success">
+                <div class="text-muted fw-semibold">VÉ ĐÃ CHECK-IN</div>
+                <h2>—</h2>
+                <small class="text-muted">Chờ API vé khách hàng</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="card-header bg-white py-3">
+            <h5 class="fw-bold mb-0">
+                <i class="fa-solid fa-list text-primary me-2"></i>
+                Danh Sách Vé Đã Đăng Ký
+            </h5>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="alert alert-info mb-0">
+                Chức năng xem vé theo tài khoản đang được tích hợp.
+                Vé sẽ xuất hiện ở đây sau khi hệ thống xác minh
+                quyền sở hữu và kết nối API.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="inline-customer-account" class="container-fluid px-4 py-4" hidden>
+    <h3 class="fw-bold mb-4">Thông Tin Tài Khoản</h3>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card card-stats p-4 border-start border-4 border-primary">
+                <div class="text-muted fw-semibold">TỔNG VÉ CỦA TÔI</div>
+                <h2>—</h2>
+                <small class="text-muted">Chờ tích hợp API vé</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-stats p-4 border-start border-4 border-info">
+                <div class="text-muted fw-semibold">SỰ KIỆN ĐÃ ĐĂNG KÝ</div>
+                <h2>—</h2>
+                <small class="text-muted">Chờ tích hợp API vé</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-stats p-4 border-start border-4 border-success">
+                <div class="text-muted fw-semibold">VÉ ĐÃ CHECK-IN</div>
+                <h2>—</h2>
+                <small class="text-muted">Chờ tích hợp API vé</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4 p-4">
+        <h5 class="fw-bold mb-4">
+            <i class="fa-solid fa-user-circle me-2 text-primary"></i>
+            Thông Tin Cá Nhân
+        </h5>
+        <div class="row mb-3">
+            <div class="col-md-3 fw-bold">Họ và tên</div>
+            <div class="col-md-9" id="inline-customer-name"></div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-3 fw-bold">Email</div>
+            <div class="col-md-9" id="inline-customer-email"></div>
+        </div>
+        <div>
+            <button id="inline-customer-logout"
+                    class="btn btn-outline-danger rounded-pill px-4">
+                <i class="fa-solid fa-right-from-bracket me-2"></i>
+                Đăng xuất
+            </button>
+        </div>
+    </div>
+</div>
+
+    <div id="main-events-content" class="container pb-5">
         <!-- Dashboard Thống kê thời gian thực từ PostgreSQL -->
         <div class="row g-3 mb-4">
             <div class="col-md-3">
@@ -394,6 +915,25 @@
 
         // Chuyển Tab chính
         function switchMainTab(tab) {
+            // Quay về vùng nội dung chính khi chọn Tra cứu hoặc Soát vé
+            const main = document.getElementById('main-events-content');
+            const account = document.getElementById('inline-customer-account');
+            const tickets = document.getElementById('inline-customer-tickets');
+
+            if (main) main.hidden = false;
+            if (account) account.hidden = true;
+            if (tickets) tickets.hidden = true;
+
+            // Đồng bộ trạng thái menu bên trái
+            document.querySelectorAll('.navbar-main .nav-link')
+                .forEach(link => link.classList.remove('active'));
+
+            const menuItem = [...document.querySelectorAll('.navbar-main a')]
+                .find(link => link.getAttribute('onclick')?.includes(
+                    "switchMainTab('" + tab + "')"
+                ));
+            if (menuItem) menuItem.classList.add('active');
+
             document.querySelectorAll('#clientTabs .nav-link').forEach(btn => btn.classList.remove('active'));
             document.getElementById('section-events').classList.add('d-none');
             document.getElementById('section-lookup').classList.add('d-none');
@@ -855,5 +1395,500 @@
             loadPublicEvents();
         });
     </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const label = document.getElementById('customer-account-label');
+    if (!label) return;
+
+    try {
+        const response = await fetch('/api/customer/me', {
+            credentials: 'same-origin',
+            cache: 'no-store'
+        });
+
+        if (response.ok) {
+            label.textContent = 'Tài khoản của tôi';
+
+
+        } else {
+            label.textContent = 'Đăng nhập / Đăng ký';
+        }
+    } catch {
+        label.textContent = 'Đăng nhập / Đăng ký';
+    }
+});
+</script>
+
+
+<script>
+async function showCustomerAccount() {
+    const account = document.getElementById('inline-customer-account');
+    const events = document.getElementById('main-events-content');
+
+    try {
+        const response = await fetch('/api/customer/me', {
+            credentials: 'same-origin',
+            cache: 'no-store'
+        });
+
+        if (response.status === 401) {
+            window.location.href = '/customer.html';
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error('Không thể tải thông tin tài khoản.');
+        }
+
+        const result = await response.json();
+
+        document.getElementById('inline-customer-name').textContent =
+            result.user.full_name;
+
+        document.getElementById('inline-customer-email').textContent =
+            result.user.email;
+
+        events.hidden = true;
+        account.hidden = false;
+
+        window.scrollTo(0, 0);
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+function showCustomerEvents() {
+    document.getElementById('inline-customer-account').hidden = true;
+    document.getElementById('main-events-content').hidden = false;
+}
+
+document.getElementById('inline-customer-logout')
+    .addEventListener('click', async () => {
+        try {
+            const response = await fetch('/api/customer/logout', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {'Content-Type': 'application/json'},
+                body: '{}'
+            });
+
+            if (!response.ok) throw new Error();
+
+            window.location.href = '/customer.html';
+        } catch {
+            alert('Không thể đăng xuất. Vui lòng thử lại.');
+        }
+    });
+</script>
+
+
+<script id="inline-customer-tickets-script">
+async function showCustomerTickets() {
+    try {
+        const response = await fetch('/api/customer/me', {
+            credentials: 'same-origin',
+            cache: 'no-store'
+        });
+
+        if (response.status === 401) {
+            window.location.href = '/customer.html';
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error('Không thể xác thực tài khoản.');
+        }
+
+        document.getElementById('main-events-content').hidden = true;
+        document.getElementById('inline-customer-account').hidden = true;
+        document.getElementById('inline-customer-tickets').hidden = false;
+
+        window.scrollTo(0, 0);
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+// Bảo đảm khi mở tài khoản sẽ ẩn mục vé
+const previousShowCustomerAccount = showCustomerAccount;
+showCustomerAccount = async function() {
+    document.getElementById('inline-customer-tickets').hidden = true;
+    await previousShowCustomerAccount();
+};
+
+// Quay lại danh sách sự kiện
+const previousShowCustomerEvents = showCustomerEvents;
+showCustomerEvents = function() {
+    document.getElementById('inline-customer-tickets').hidden = true;
+    previousShowCustomerEvents();
+};
+</script>
+
+
+<script id="customer-live-tickets-v1">
+(function () {
+    const ticketSection = document.getElementById('inline-customer-tickets');
+    const accountSection = document.getElementById('inline-customer-account');
+
+    function getStats(tickets) {
+        return {
+            total: tickets.length,
+            valid: tickets.filter(t => t.status === 'valid').length,
+            used: tickets.filter(t => t.status === 'used').length,
+            events: new Set(tickets.map(t => String(t.event_id))).size
+        };
+    }
+
+    function setStats(section, values) {
+        const numbers = section.querySelectorAll('.row.g-3.mb-4 h2');
+        const descriptions = section.querySelectorAll('.row.g-3.mb-4 small');
+
+        values.forEach((value, index) => {
+            if (numbers[index]) numbers[index].textContent = String(value);
+        });
+
+        descriptions.forEach(el => {
+            el.textContent = 'Cập nhật từ hệ thống';
+        });
+    }
+
+    function formatDate(value) {
+        if (!value) return 'Chưa cập nhật';
+
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return String(value);
+
+        return date.toLocaleDateString('vi-VN', {
+            timeZone: 'UTC',
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+    }
+
+    async function loadTickets() {
+        const response = await fetch('/api/customer/my-tickets', {
+            credentials: 'same-origin',
+            cache: 'no-store'
+        });
+
+        if (response.status === 401) {
+            window.location.href = '/customer.html';
+            throw new Error('Vui lòng đăng nhập lại.');
+        }
+
+        if (!response.ok) {
+            throw new Error('Không tải được danh sách vé.');
+        }
+
+        const result = await response.json();
+
+        if (!result.success || !Array.isArray(result.data)) {
+            throw new Error('Dữ liệu vé không hợp lệ.');
+        }
+
+        return result.data;
+    }
+
+    function addText(parent, tag, text, className) {
+        const el = document.createElement(tag);
+        el.textContent = text == null ? '' : String(text);
+        if (className) el.className = className;
+        parent.appendChild(el);
+        return el;
+    }
+
+    function renderTickets(tickets) {
+        const body = ticketSection.querySelector('.card-body.p-4');
+        if (!body) throw new Error('Không tìm thấy vùng hiển thị vé.');
+
+        body.replaceChildren();
+
+        if (tickets.length === 0) {
+            addText(
+                body,
+                'div',
+                'Bạn chưa có vé liên kết với tài khoản này.',
+                'alert alert-info mb-0'
+            );
+            return;
+        }
+
+        const list = document.createElement('div');
+        list.className = 'row g-3';
+
+        tickets.forEach(ticket => {
+            const column = document.createElement('div');
+            column.className = 'col-lg-6 col-xl-4';
+
+            const card = document.createElement('div');
+            card.className = 'card h-100 border rounded-4 shadow-sm';
+
+            const content = document.createElement('div');
+            content.className = 'card-body p-3';
+
+            addText(
+                content,
+                'h5',
+                ticket.event_name || 'Sự kiện',
+                'fw-bold mb-3'
+            );
+
+            const statusNames = {
+                valid: 'Còn hiệu lực',
+                used: 'Đã check-in',
+                cancelled: 'Đã hủy'
+            };
+
+            const status = statusNames[ticket.status] ||
+                ticket.status || 'Chưa xác định';
+
+            addText(content, 'p', 'Trạng thái: ' + status, 'mb-2');
+            addText(
+                content,
+                'p',
+                'Ngày: ' + formatDate(ticket.event_date),
+                'mb-2'
+            );
+            addText(
+                content,
+                'p',
+                'Giờ: ' + (ticket.event_time || 'Chưa cập nhật'),
+                'mb-2'
+            );
+            addText(
+                content,
+                'p',
+                'Địa điểm: ' + (ticket.location || 'Chưa cập nhật'),
+                'mb-2'
+            );
+
+            addText(
+                content,
+                'p',
+                'Mã vé: ' + ticket.ticket_code,
+                'fw-semibold text-primary text-break mb-3'
+            );
+
+            if (ticket.ticket_code) {
+                const qr = document.createElement('img');
+
+                // Dùng cùng dịch vụ QR với chức năng tra cứu vé hiện có.
+                qr.src = 'https://api.qrserver.com/v1/create-qr-code/' +
+                    '?size=220x220&data=' +
+                    encodeURIComponent(ticket.ticket_code);
+
+                qr.alt = 'QR vé ' + ticket.ticket_code;
+                qr.width = 180;
+                qr.height = 180;
+                qr.loading = 'lazy';
+                qr.className = 'd-block mx-auto img-fluid';
+                content.appendChild(qr);
+            }
+
+            card.appendChild(content);
+            column.appendChild(card);
+            list.appendChild(column);
+        });
+
+        body.appendChild(list);
+    }
+
+    async function refreshTicketScreen() {
+        try {
+            const tickets = await loadTickets();
+            const stats = getStats(tickets);
+
+            if (ticketSection.hidden) return;
+
+            setStats(ticketSection, [
+                stats.total,
+                stats.valid,
+                stats.used
+            ]);
+
+            renderTickets(tickets);
+        } catch (error) {
+            if (ticketSection.hidden) return;
+            const body = ticketSection.querySelector('.card-body.p-4');
+            if (body) {
+                body.replaceChildren();
+                addText(body, 'div', error.message,
+                    'alert alert-danger mb-0');
+            }
+        }
+    }
+
+    async function refreshAccountStats() {
+        try {
+            const tickets = await loadTickets();
+            if (accountSection.hidden) return;
+
+            const stats = getStats(tickets);
+
+            setStats(accountSection, [
+                stats.total,
+                stats.events,
+                stats.used
+            ]);
+        } catch (error) {
+            console.error('Không thể cập nhật thống kê:', error.message);
+        }
+    }
+
+    const oldShowTickets = window.showCustomerTickets;
+    window.showCustomerTickets = async function () {
+        await oldShowTickets();
+
+        if (!ticketSection.hidden) {
+            await refreshTicketScreen();
+        }
+    };
+
+    const oldShowAccount = window.showCustomerAccount;
+    window.showCustomerAccount = async function () {
+        await oldShowAccount();
+
+        if (!accountSection.hidden) {
+            await refreshAccountStats();
+        }
+    };
+})();
+</script>
+
+
+<script id="customer-sidebar-active-fix-v1">
+(function () {
+    const sidebar = document.querySelector(
+        '.sidebar, #sidebar, .client-sidebar, .customer-sidebar'
+    );
+
+    function getMenuItems() {
+        const roots = sidebar
+            ? [sidebar]
+            : [document];
+
+        return Array.from(
+            roots[0].querySelectorAll('a, button')
+        ).filter(el => {
+            const text = (el.textContent || '')
+                .trim()
+                .toLowerCase();
+
+            return [
+                'danh sách sự kiện',
+                'tra cứu vé qr',
+                'soát vé nhân viên',
+                'tài khoản của tôi',
+                'vé của tôi'
+            ].some(name => text.includes(name));
+        });
+    }
+
+    function normalize(text) {
+        return (text || '')
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/đ/g, 'd')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function setActive(label) {
+        const selected = normalize(label);
+
+        getMenuItems().forEach(el => {
+            const text = normalize(el.textContent);
+            const active = text.includes(selected);
+
+            el.classList.toggle('active', active);
+            el.classList.toggle('customer-menu-active', active);
+
+            const parent = el.closest('.nav-item');
+            if (parent) {
+                parent.classList.toggle(
+                    'customer-menu-parent-active',
+                    active
+                );
+            }
+
+            if (active) {
+                el.setAttribute('aria-current', 'page');
+            } else {
+                el.removeAttribute('aria-current');
+            }
+        });
+    }
+
+    function detectLabel(el) {
+        const text = normalize(el.textContent);
+
+        if (text.includes('danh sach su kien'))
+            return 'Danh Sách Sự Kiện';
+
+        if (text.includes('tra cuu ve qr'))
+            return 'Tra Cứu Vé QR';
+
+        if (text.includes('soat ve nhan vien'))
+            return 'Soát Vé Nhân Viên';
+
+        if (text.includes('tai khoan cua toi'))
+            return 'Tài khoản của tôi';
+
+        if (text.includes('ve cua toi'))
+            return 'Vé Của Tôi';
+
+        return null;
+    }
+
+    document.addEventListener('click', function (event) {
+        const target = event.target.closest('a, button');
+        if (!target || !getMenuItems().includes(target)) return;
+
+        const label = detectLabel(target);
+        if (!label) return;
+
+        setActive(label);
+    });
+
+    function wrapFunction(name, label) {
+        const original = window[name];
+
+        if (typeof original !== 'function') return;
+
+        window[name] = function (...args) {
+            const result = original.apply(this, args);
+            setActive(label);
+            return result;
+        };
+    }
+
+    wrapFunction('showCustomerTickets', 'Vé Của Tôi');
+    wrapFunction('showCustomerAccount', 'Tài khoản của tôi');
+    wrapFunction('showCustomerEvents', 'Danh Sách Sự Kiện');
+
+    const style = document.createElement('style');
+    style.textContent = `
+        .customer-menu-active {
+            background: #3730a3 !important;
+            color: #ffffff !important;
+            font-weight: 700 !important;
+            border-radius: 12px;
+        }
+
+        .customer-menu-active i,
+        .customer-menu-active svg {
+            color: #ffffff !important;
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Trạng thái ban đầu
+    setActive('Danh Sách Sự Kiện');
+})();
+</script>
+
 </body>
 </html>

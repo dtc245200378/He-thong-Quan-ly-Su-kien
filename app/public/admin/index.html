@@ -89,6 +89,255 @@
         .badge-ended { background-color: #f1f5f9; color: #475569; }
         .badge-soldout { background-color: #fee2e2; color: #dc2626; }
     </style>
+
+<style id="admin-purple-compact-v1">
+
+/* Màu và font đồng bộ Web khách hàng */
+:root {
+    --primary-color: #4f46e5;
+    --primary-hover: #3730a3;
+    --secondary-color: #818cf8;
+}
+
+body, button, input, select, textarea {
+    font-family: 'Plus Jakarta Sans', 'Inter',
+        system-ui, sans-serif !important;
+}
+
+/* Sidebar Admin */
+.sidebar,
+.admin-sidebar {
+    background: linear-gradient(
+        155deg,
+        #4f46e5 0%,
+        #6366f1 54%,
+        #818cf8 100%
+    ) !important;
+}
+
+.sidebar .nav-link,
+.admin-sidebar .nav-link,
+.sidebar .menu-item,
+.admin-sidebar .menu-item {
+    color: #ffffff !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+}
+
+.sidebar .nav-link.active,
+.admin-sidebar .nav-link.active,
+.sidebar .menu-item.active,
+.admin-sidebar .menu-item.active {
+    background: #3730a3 !important;
+    color: #ffffff !important;
+}
+
+/* Chữ nhỏ, gọn hơn */
+body {
+    font-size: 13px;
+}
+
+h1 { font-size: 22px !important; }
+h2 { font-size: 19px !important; }
+h3 { font-size: 17px !important; }
+h4, h5 { font-size: 15px !important; }
+
+.btn {
+    font-size: 12px !important;
+}
+
+.form-control,
+.form-select {
+    font-size: 12px !important;
+}
+
+/* Bảng Admin */
+table {
+    font-size: 12px;
+}
+
+table th,
+table td {
+    padding: 10px 12px;
+}
+
+/* Thu gọn các card thống kê */
+.card {
+    border-radius: 13px;
+}
+
+.card .text-muted,
+.card small {
+    font-size: 11px;
+}
+
+/* Sửa mã vé dài bị tràn trong khối check-in */
+.admin-checkin-feed,
+.admin-checkin-feed * {
+    min-width: 0;
+}
+
+.admin-checkin-feed {
+    overflow: hidden;
+}
+
+.admin-checkin-feed .checkin-entry {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.admin-checkin-feed .checkin-entry .checkin-details {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.admin-checkin-feed .checkin-entry .checkin-details > * {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+.admin-checkin-feed .checkin-entry .checkin-details .ticket-meta {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-checkin-feed .checkin-entry .checkin-time {
+    flex-shrink: 0;
+}
+
+</style>
+
+
+<style id="admin-white-sidebar-text">
+
+/* Chữ trắng dễ nhìn giống sidebar khách hàng */
+.sidebar,
+.admin-sidebar {
+    color: #ffffff !important;
+}
+
+/* Tiêu đề sidebar */
+.sidebar .brand,
+.sidebar .brand-title,
+.sidebar .sidebar-brand,
+.admin-sidebar .brand,
+.admin-sidebar .sidebar-brand {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+}
+
+/* Các chức năng */
+.sidebar .nav-link,
+.sidebar .menu-item,
+.admin-sidebar .nav-link,
+.admin-sidebar .menu-item {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    opacity: 1 !important;
+}
+
+/* Biểu tượng */
+.sidebar .nav-link i,
+.sidebar .menu-item i,
+.admin-sidebar .nav-link i,
+.admin-sidebar .menu-item i {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Mục đang chọn */
+.sidebar .nav-link.active,
+.sidebar .menu-item.active,
+.admin-sidebar .nav-link.active,
+.admin-sidebar .menu-item.active {
+    background: #3730a3 !important;
+    color: #ffffff !important;
+}
+
+/* Chữ mô tả phân nhóm */
+.sidebar .menu-title,
+.sidebar .section-title,
+.admin-sidebar .menu-title {
+    color: #e0e7ff !important;
+}
+
+/* Chữ ở phần tài khoản dưới cùng */
+.sidebar .sidebar-user,
+.admin-sidebar .sidebar-user {
+    color: #ffffff !important;
+}
+</style>
+
+
+<style id="admin-sidebar-contrast-fix">
+
+/* Giữ nền tím, tăng độ tương phản của chữ */
+.sidebar,
+.admin-sidebar {
+    background: linear-gradient(
+        155deg, #4f46e5, #6366f1 55%, #818cf8
+    ) !important;
+}
+
+/* Chữ và biểu tượng menu */
+.sidebar a,
+.sidebar button,
+.sidebar .nav-link,
+.sidebar .menu-item,
+.admin-sidebar a,
+.admin-sidebar button,
+.admin-sidebar .nav-link,
+.admin-sidebar .menu-item {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Font icon */
+.sidebar i,
+.sidebar svg,
+.admin-sidebar i,
+.admin-sidebar svg {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Menu chưa chọn */
+.sidebar .nav-link:not(.active),
+.sidebar .menu-item:not(.active),
+.admin-sidebar .nav-link:not(.active),
+.admin-sidebar .menu-item:not(.active) {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Menu đang chọn */
+.sidebar .nav-link.active,
+.sidebar .menu-item.active,
+.admin-sidebar .nav-link.active,
+.admin-sidebar .menu-item.active {
+    background: #3730a3 !important;
+    color: #ffffff !important;
+}
+
+/* Tiêu đề nhóm */
+.sidebar .menu-title,
+.sidebar .section-title,
+.admin-sidebar .menu-title,
+.admin-sidebar .section-title {
+    color: #f1f5f9 !important;
+    opacity: 1 !important;
+}
+
+/* Tên người dùng */
+.sidebar .sidebar-user,
+.admin-sidebar .sidebar-user {
+    color: #ffffff !important;
+}
+
+</style>
+
 </head>
 <body>
     <!-- Mobile Sidebar Overlay -->
