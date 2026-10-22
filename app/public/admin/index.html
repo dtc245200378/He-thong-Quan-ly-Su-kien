@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cổng Quản Trị Hệ Thống Sự Kiện - Admin Portal</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6.5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Admin CSS -->
+    <link rel="stylesheet" href="/admin/css/admin.css">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #818cf8;
+            --sidebar-dark: #0f172a;
+        }
+        body {
+            background-color: #f3f4f6;
+            font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .table-custom thead th,
+        .table thead th {
+            background-color: #1e293b !important;
+            color: #ffffff !important;
+            font-weight: 600;
+            border-bottom: none;
+            padding: 0.85rem 1rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.03em;
+        }
+        .navbar-admin-gradient {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .card-stats {
+            border: none;
+            border-radius: 14px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card-stats:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        .nav-item-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            border: 0;
+            background: transparent;
+            color: #94a3b8;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        .nav-item-btn:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+        }
+        .nav-item-btn.active {
+            background: linear-gradient(135deg, var(--primary-color), #4338ca);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+        }
+        .admin-tab-view.d-none {
+            display: none !important;
+        }
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 50rem;
+            font-weight: 600;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .badge-upcoming { background-color: #e0f2fe; color: #0284c7; }
+        .badge-open { background-color: #dcfce7; color: #16a34a; }
+        .badge-ended { background-color: #f1f5f9; color: #475569; }
+        .badge-soldout { background-color: #fee2e2; color: #dc2626; }
+    </style>
+</head>
+<body>
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" class="sidebar-overlay" onclick="AdminApp.closeMobileSidebar()"></div>
+
+    <div class="admin-layout">
+        <!-- SIDEBAR CHÍNH -->
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="sidebar-header">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+                <div>
+                    <h6 class="fw-bold text-white mb-0 text-uppercase tracking-wider">EVENT ADMIN</h6>
+                    <small class="text-white-50" style="font-size: 0.725rem;">Hệ Thống Quản Trị</small>
+                </div>
+            </div>
+
+            <div class="sidebar-nav">
+                <div class="nav-section-title">CHỨC NĂNG CHÍNH</div>
+                <button class="nav-item-btn active" data-tab="dashboard" onclick="AdminApp.switchTab('dashboard')">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Tổng Quan Hệ Thống</span>
+                </button>
+                <button class="nav-item-btn" data-tab="events" onclick="AdminApp.switchTab('events')">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>Quản Lý Sự Kiện</span>
+                </button>
+                <button class="nav-item-btn" data-tab="attendees" onclick="AdminApp.switchTab('attendees')">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Người Tham Dự</span>
+                </button>
+                <button class="nav-item-btn" data-tab="tickets" onclick="AdminApp.switchTab('tickets')">
+                    <i class="fa-solid fa-ticket"></i>
+                    <span>Quản Lý Vé Điện Tử</span>
+                </button>
+
+                <div class="nav-section-title mt-3">VẬN HÀNH & BÁO CÁO</div>
+                <button class="nav-item-btn" data-tab="checkin" onclick="AdminApp.switchTab('checkin')">
+                    <i class="fa-solid fa-qrcode"></i>
+                    <span>Trạm Check-in Soát Vé</span>
+                </button>
+                <button class="nav-item-btn" data-tab="reports" onclick="AdminApp.switchTab('reports')">
+                    <i class="fa-solid fa-file-invoice"></i>
+                    <span>Báo Cáo Thống Kê</span>
+                </button>
+                <button class="nav-item-btn" data-tab="audit" onclick="AdminApp.switchTab('audit')">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Nhật Ký Quản Trị</span>
+                </button>
+
+                <div class="nav-section-title mt-3">HỆ THỐNG</div>
+                <button class="nav-item-btn" data-tab="profile" onclick="AdminApp.switchTab('profile')">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>Hồ Sơ & Bảo Mật</span>
+                </button>
+                <a href="/" target="_blank" class="nav-item-btn text-info">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <span>Xem Website Khách</span>
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-profile-widget">
+                    <div class="user-avatar user-avatar-initials">AD</div>
+                    <div class="overflow-hidden flex-grow-1">
+                        <div class="fw-bold text-white small text-truncate admin-full-name">Quản Trị Viên</div>
+                        <div class="text-white-50" style="font-size: 0.75rem;"><span class="admin-role-badge">SUPERADMIN</span></div>
+                    </div>
+                    <button class="btn btn-sm btn-outline-light border-0" onclick="AdminApp.logout()" title="Đăng xuất">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- NỘI DUNG CHÍNH (ADMIN MAIN) -->
+        <main class="admin-main">
+            <!-- Header thanh điều hướng -->
+            <header class="admin-header">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="btn btn-light d-lg-none border" onclick="AdminApp.toggleMobileSidebar()">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h5 class="page-title mb-0" id="current-page-title">Tổng Quan Hệ Thống</h5>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <a href="/" class="btn btn-sm btn-outline-primary rounded-pill px-3" target="_blank">
+                        <i class="fa-solid fa-globe me-1"></i> Trang Khách Hàng
+                    </a>
+                    <button class="btn btn-sm btn-primary rounded-pill px-3 fw-semibold shadow-sm" data-bs-toggle="modal" data-bs-target="#createEventModal">
+                        <i class="fa-solid fa-plus me-1"></i> Tạo Sự Kiện Mới
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="AdminApp.logout()">
+                        <i class="fa-solid fa-arrow-right-from-bracket me-1"></i> Đăng Xuất
+                    </button>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <!-- ============================================== -->
+                <!-- TAB 1: TỔNG QUAN DASHBOARD                     -->
+                <!-- ============================================== -->
+                <section id="view-dashboard" class="admin-tab-view">
+                    <!-- Hàng thống kê 1 (Theo chuẩn Website chính) -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card card-stats p-3 bg-white border-start border-4 border-primary">
+                                <div class="text-muted small fw-semibold text-uppercase">TỔNG SỰ KIỆN</div>
+                                <h3 class="fw-bold text-dark mb-0 mt-1" id="dash-total-events">0</h3>
+                                <div class="text-muted small mt-1"><i class="fa-solid fa-database text-primary me-1"></i>Từ PostgreSQL</div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card card-stats p-3 bg-white border-start border-4 border-info">
+                                <div class="text-muted small fw-semibold text-uppercase">TỔNG SỨC CHỨA</div>
+                                <h3 class="fw-bold text-info mb-0 mt-1" id="dash-total-issued">0</h3>
+                                <div class="text-muted small mt-1"><i class="fa-solid fa-ticket-simple text-info me-1"></i>Vé phát hành</div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card card-stats p-3 bg-white border-start border-4 border-warning">
+                                <div class="text-muted small fw-semibold text-uppercase">TỔNG LƯỢT ĐĂNG KÝ</div>
+                                <h3 class="fw-bold text-warning mb-0 mt-1" id="dash-total-registered">0</h3>
+                                <div class="text-muted small mt-1"><i class="fa-solid fa-user-check text-warning me-1"></i>Đã cấp vé thực tế</div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card card-stats p-3 bg-white border-start border-4 border-success">
+                                <div class="text-muted small fw-semibold text-uppercase">TỔNG LƯỢT CHECK-IN</div>
+                                <h3 class="fw-bold text-success mb-0 mt-1" id="dash-total-checkin">0</h3>
+                                <div class="text-muted small mt-1"><i class="fa-solid fa-qrcode text-success me-1"></i>Đã vào cổng sự kiện</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hàng thống kê 2 -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
+                                <div class="text-muted small fw-semibold">VÉ CÒN LẠI TRÊN HỆ THỐNG</div>
+                                <h4 class="fw-bold text-dark mt-1 mb-0" id="dash-remaining-tickets">0</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
+                                <div class="text-muted small fw-semibold">TỶ LỆ LẤP ĐẦY TRUNG BÌNH</div>
+                                <h4 class="fw-bold text-primary mt-1 mb-0" id="dash-fill-rate">0%</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
+                                <div class="text-muted small fw-semibold">TỶ LỆ CHECK-IN THỰC TẾ</div>
+                                <h4 class="fw-bold text-success mt-1 mb-0" id="dash-checkin-rate">0%</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Biểu đồ & Thống kê tiến độ sự kiện -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-lg-7">
+                            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-chart-simple text-primary me-2"></i>Tiến Độ Đăng Ký & Check-in Từng Sự Kiện</h6>
+                                <div id="dash-chart-container">
+                                    <div class="text-center py-4 text-muted"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Đang tải dữ liệu biểu đồ...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-clock-rotate-left text-success me-2"></i>Lượt Check-in Mới Nhất Tại Cổng</h6>
+                                <div id="dash-recent-checkins-list" class="d-flex flex-column gap-2">
+                                    <div class="text-center py-4 text-muted">Chưa có lượt check-in nào ghi nhận.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bảng sự kiện sắp diễn ra -->
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                        <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 fw-bold text-dark"><i class="fa-solid fa-calendar-days text-primary me-2"></i>Sự Kiện Sắp Diễn Ra Gần Nhất</h6>
+                            <button class="btn btn-sm btn-link text-decoration-none fw-semibold" onclick="AdminApp.switchTab('events')">Xem tất cả sự kiện →</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="ps-3">ID</th>
+                                        <th>Tên Sự Kiện</th>
+                                        <th>Thời Gian Tổ Chức</th>
+                                        <th>Địa Điểm</th>
+                                        <th class="pe-3">Vé Đã Bán / Tổng</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dash-upcoming-events-tbody">
+                                    <!-- Render JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- TAB 2: QUẢN LÝ SỰ KIỆN                          -->
+                <!-- ============================================== -->
+                <section id="view-events" class="admin-tab-view d-none">
+                    <div class="card border-0 shadow-sm p-3 mb-4 rounded-4 bg-white">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                                    <input type="text" id="events-search-input" class="form-control border-start-0 bg-light" placeholder="Tìm kiếm tên sự kiện hoặc địa điểm...">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <select id="events-status-filter" class="form-select bg-light">
+                                    <option value="all">🔍 Tất cả trạng thái</option>
+                                    <option value="upcoming">⏳ Sắp diễn ra</option>
+                                    <option value="open">🟢 Đang diễn ra</option>
+                                    <option value="soldout">🔴 Hết vé</option>
+                                    <option value="ended">🏁 Đã kết thúc</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 text-end">
+                                <button class="btn btn-primary w-100 fw-semibold rounded-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#createEventModal">
+                                    <i class="fa-solid fa-plus me-1"></i> Thêm Sự Kiện
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="ps-3">ID</th>
+                                        <th>Tên Sự Kiện</th>
+                                        <th>Ngày & Giờ</th>
+                                        <th>Địa Điểm</th>
+                                        <th>Trạng Thái</th>
+                                        <th>Vé (Đã Bán / Tổng)</th>
+                                        <th class="text-center pe-3">Thao Tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="events-table-tbody">
+                                    <!-- Render JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer bg-white border-0 py-3" id="events-pagination-container">
+                            <!-- Pagination Render JS -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- TAB 3: NGƯỜI THAM DỰ (ATTENDEES)               -->
+                <!-- ============================================== -->
+                <section id="view-attendees" class="admin-tab-view d-none">
+                    <div class="card border-0 shadow-sm p-3 mb-4 rounded-4 bg-white">
+                        <div class="row g-3">
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-search text-muted"></i></span>
+                                    <input type="text" class="form-control border-start-0 bg-light" id="attendees-search-input" placeholder="Tìm kiếm họ tên, email, số điện thoại, mã vé...">
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <select class="form-select bg-light" id="attendees-event-filter">
+                                    <option value="">🔍 Tất cả sự kiện</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="ps-3">Họ và Tên</th>
+                                        <th>Thông Tin Liên Hệ</th>
+                                        <th>Sự Kiện Đăng Ký</th>
+                                        <th>Mã Vé Cấp</th>
+                                        <th>Trạng Thái</th>
+                                        <th class="text-end pe-3">Thao Tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="attendees-table-body">
+                                    <!-- Render JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- TAB 4: QUẢN LÝ VÉ ĐIỆN TỬ (TICKETS)             -->
+                <!-- ============================================== -->
+                <section id="view-tickets" class="admin-tab-view d-none">
+                    <div class="card border-0 shadow-sm p-3 mb-4 rounded-4 bg-white">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-barcode text-muted"></i></span>
+                            <input type="text" class="form-control border-start-0 bg-light" id="tickets-search-input" placeholder="Tìm theo mã vé, tên người tham dự hoặc email...">
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="ps-3">Mã Vé Điện Tử</th>
+                                        <th>Người Sở Hữu</th>
+                                        <th>Sự Kiện Áp Dụng</th>
+                                        <th>Trạng Thái Vé</th>
+                                        <th>Thời Gian Check-in</th>
+                                        <th class="text-end pe-3">Thao Tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tickets-table-body">
+                                    <!-- Render JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- TAB 5: TRẠM CHECK-IN SOÁT VÉ (CHECKIN)         -->
+                <!-- ============================================== -->
+                <section id="view-checkin" class="admin-tab-view d-none">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="card border-0 shadow-sm p-4 p-md-5 rounded-4 text-center bg-white">
+                                <div class="mb-3">
+                                    <i class="fa-solid fa-qrcode text-primary display-3"></i>
+                                </div>
+                                <h3 class="fw-bold text-dark">Trạm Soát Vé Điện Tử Tại Cổng</h3>
+                                <p class="text-muted">Sử dụng máy quét mã vạch/QR bàn phím hoặc nhập trực tiếp mã vé để xác thực và check-in khách tham dự.</p>
+
+                                <form id="checkin-form" class="mt-3">
+                                    <div class="input-group input-group-lg mb-3 shadow-sm rounded-3 overflow-hidden">
+                                        <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-ticket text-primary"></i></span>
+                                        <input type="text" class="form-control border-start-0" id="checkin-code" placeholder="Nhập mã vé (VD: TK-2026-E1-ABCD1234)..." autocomplete="off" required>
+                                        <button class="btn btn-primary px-4 fw-bold" type="submit">
+                                            <i class="fa-solid fa-check-circle me-1"></i> Xác Nhận Check-in
+                                        </button>
+                                    </div>
+                                </form>
+
+                                <div id="checkin-result" class="mt-4" role="status"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- TAB 6: BÁO CÁO & THỐNG KÊ (REPORTS)            -->
+                <!-- ============================================== -->
+                <section id="view-reports" class="admin-tab-view d-none">
+                    <div class="card border-0 shadow-sm p-3 mb-4 rounded-4 bg-white d-flex flex-row justify-content-between align-items-center">
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1"><i class="fa-solid fa-file-csv text-success me-2"></i>Báo Cáo Tổng Hợp Dữ Liệu Sự Kiện</h6>
+                            <small class="text-muted">Dữ liệu được truy vấn và tính toán trực tiếp từ cơ sở dữ liệu PostgreSQL.</small>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-outline-success fw-semibold rounded-3" href="/api/admin/reports/export-csv?type=events">
+                                <i class="fa-solid fa-download me-1"></i> Xuất CSV Sự Kiện
+                            </a>
+                            <a class="btn btn-outline-primary fw-semibold rounded-3" href="/api/admin/reports/export-csv?type=attendees">
+                                <i class="fa-solid fa-users-gear me-1"></i> Xuất CSV Khách Mời
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="ps-3">Tên Sự Kiện</th>
+                                        <th>Ngày Diễn Ra</th>
+                                        <th>Sức Chứa</th>
+                                        <th>Vé Đã Bán</th>
+                                        <th>Đã Check-in</th>
+                                        <th>Tỷ Lệ Lấp Đầy</th>
+                                        <th class="text-end pe-3">Tỷ Lệ Tham Dự</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reports-table-body">
+                                    <!-- Render JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- TAB 7: NHẬT KÝ QUẢN TRỊ (AUDIT LOGS)           -->
+                <!-- ============================================== -->
+                <section id="view-audit" class="admin-tab-view d-none">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                        <div class="card-header bg-white py-3 border-0">
+                            <h6 class="mb-0 fw-bold text-dark"><i class="fa-solid fa-shield-halved text-primary me-2"></i>Nhật Ký Thao Tác Hệ Thống (Audit Trail)</h6>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="ps-3">Thời Gian</th>
+                                        <th>Tài Khoản</th>
+                                        <th>Hành Động</th>
+                                        <th>Đối Tượng Tác Động</th>
+                                        <th class="pe-3">Địa Chỉ IP</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="audit-table-body">
+                                    <!-- Render JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================== -->
+                <!-- TAB 8: HỒ SƠ & BẢO MẬT (PROFILE)               -->
+                <!-- ============================================== -->
+                <section id="view-profile" class="admin-tab-view d-none">
+                    <div class="row g-4">
+                        <div class="col-lg-5">
+                            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                                <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-id-card text-primary me-2"></i>Thông Tin Tài Khoản</h6>
+                                <div class="d-flex align-items-center gap-3 mb-4">
+                                    <div class="user-avatar user-avatar-initials fs-4" style="width: 56px; height: 56px;">AD</div>
+                                    <div>
+                                        <h5 class="fw-bold mb-1 admin-full-name">Quản Trị Viên</h5>
+                                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle admin-role-badge">SUPERADMIN</span>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="text-muted small">Email hệ thống:</label>
+                                    <div class="fw-semibold admin-email">admin@eventmanagement.vn</div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="text-muted small">Quyền hạn:</label>
+                                    <div class="fw-semibold text-success">Toàn quyền quản trị hệ thống</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7">
+                            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                                <h6 class="fw-bold text-dark mb-3"><i class="fa-solid fa-key text-warning me-2"></i>Đổi Mật Khẩu Quản Trị</h6>
+                                <form id="password-form" class="row g-3">
+                                    <div class="col-12">
+                                        <label class="form-label fw-semibold">Mật khẩu hiện tại</label>
+                                        <input type="password" class="form-control" id="current-pass" autocomplete="current-password" required placeholder="Nhập mật khẩu hiện tại...">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Mật khẩu mới (tối thiểu 8 ký tự)</label>
+                                        <input type="password" class="form-control" id="new-pass" minlength="8" autocomplete="new-password" required placeholder="Mật khẩu mới...">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Xác nhận mật khẩu mới</label>
+                                        <input type="password" class="form-control" id="confirm-pass" minlength="8" autocomplete="new-password" required placeholder="Nhập lại mật khẩu mới...">
+                                    </div>
+                                    <div class="col-12 mt-4">
+                                        <button class="btn btn-primary fw-bold px-4 py-2 rounded-3 shadow-sm" type="submit">
+                                            <i class="fa-solid fa-shield-check me-1"></i> Cập Nhật Mật Khẩu
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- MODALS HỆ THỐNG                                -->
+    <!-- ============================================== -->
+
+    <!-- Modal Thêm Sự Kiện -->
+    <div class="modal fade" id="createEventModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow">
+                <div class="modal-header bg-primary text-white rounded-top-4">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-calendar-plus me-2"></i>Thêm Sự Kiện Mới</h5>
+                    <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="createEventForm" onsubmit="AdminEvents.submitCreate(event)">
+                    <div class="modal-body p-4">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label fw-semibold" for="new-event-name">Tên Sự Kiện <span class="text-danger">*</span></label>
+                                <input class="form-control" id="new-event-name" type="text" required placeholder="VD: Diễn Đàn Đổi Mới Sáng Tạo & AI 2026">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="new-event-date">Ngày Tổ Chức <span class="text-danger">*</span></label>
+                                <input class="form-control" id="new-event-date" type="date" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="new-event-time">Giờ Tổ Chức</label>
+                                <input class="form-control" id="new-event-time" type="time" value="08:30" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="new-event-capacity">Tổng Số Vé Phát Hành <span class="text-danger">*</span></label>
+                                <input class="form-control" id="new-event-capacity" type="number" required min="1" placeholder="100">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="new-event-location">Địa Điểm Tổ Chức</label>
+                                <input class="form-control" id="new-event-location" type="text" placeholder="Trung tâm Hội nghị Quốc tế">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold" for="new-event-desc">Mô Tả Chi Tiết</label>
+                                <textarea class="form-control" id="new-event-desc" rows="3" placeholder="Thông tin tóm tắt về diễn giả, nội dung chương trình..."></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold" for="new-event-image">URL Hình Ảnh Banner</label>
+                                <input class="form-control" id="new-event-image" type="url" placeholder="https://images.unsplash.com/...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light rounded-bottom-4">
+                        <button class="btn btn-outline-secondary rounded-3" type="button" data-bs-dismiss="modal">Hủy bỏ</button>
+                        <button id="btn-submit-create-event" class="btn btn-primary fw-bold rounded-3 px-4 shadow-sm" type="submit">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Lưu & Xuất Bản
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sửa Sự Kiện -->
+    <div class="modal fade" id="editEventModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow">
+                <div class="modal-header bg-warning text-dark rounded-top-4">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-pen-to-square me-2"></i>Cập Nhật Sự Kiện</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="editEventForm" onsubmit="AdminEvents.submitEdit(event)">
+                    <input type="hidden" id="edit-event-id">
+                    <div class="modal-body p-4">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label fw-semibold" for="edit-event-name">Tên Sự Kiện <span class="text-danger">*</span></label>
+                                <input class="form-control" id="edit-event-name" type="text" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="edit-event-date">Ngày Tổ Chức <span class="text-danger">*</span></label>
+                                <input class="form-control" id="edit-event-date" type="date" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="edit-event-time">Giờ Tổ Chức</label>
+                                <input class="form-control" id="edit-event-time" type="time" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="edit-event-capacity">Tổng Số Vé <span class="text-danger">*</span></label>
+                                <input class="form-control" id="edit-event-capacity" type="number" required min="1">
+                                <div id="edit-event-sold-info" class="small text-muted mt-1"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="edit-event-location">Địa Điểm Tổ Chức</label>
+                                <input class="form-control" id="edit-event-location" type="text">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Trạng Thái Công Bố</label>
+                                <select id="edit-event-status" class="form-select">
+                                    <option value="published">Công khai (published)</option>
+                                    <option value="draft">Bản nháp (draft)</option>
+                                    <option value="cancelled">Hủy bỏ (cancelled)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold" for="edit-event-image">URL Hình Ảnh</label>
+                                <input class="form-control" id="edit-event-image" type="url">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold" for="edit-event-desc">Mô Tả Chi Tiết</label>
+                                <textarea class="form-control" id="edit-event-desc" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light rounded-bottom-4">
+                        <button type="button" class="btn btn-outline-secondary rounded-3" data-bs-dismiss="modal">Đóng</button>
+                        <button type="submit" id="btn-submit-edit-event" class="btn btn-warning fw-bold rounded-3 px-4 shadow-sm">
+                            <i class="fa-solid fa-check me-1"></i> Lưu Thay Đổi
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Xóa Mềm Sự Kiện -->
+    <div class="modal fade" id="deleteEventModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow">
+                <div class="modal-header bg-danger text-white rounded-top-4">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-triangle-exclamation me-2"></i>Xác Nhận Xóa Sự Kiện</h5>
+                    <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div id="delete-event-name" class="fw-bold fs-5 text-dark mb-2"></div>
+                    <div id="delete-event-warning" class="alert alert-warning border-0 small mb-0">
+                        <i class="fa-solid fa-circle-info me-1"></i>
+                        Hệ thống sẽ thực hiện <b>xóa mềm (soft-delete)</b>. Sự kiện sẽ không còn hiển thị trên Website Khách Hàng, nhưng lịch sử vé và dữ liệu kiểm toán được lưu trữ an toàn trong cơ sở dữ liệu.
+                    </div>
+                </div>
+                <div class="modal-footer bg-light rounded-bottom-4">
+                    <button class="btn btn-outline-secondary rounded-3" data-bs-dismiss="modal">Hủy bỏ</button>
+                    <button id="btn-execute-delete-event" onclick="AdminEvents.executeDelete()" class="btn btn-danger fw-bold rounded-3 px-4 shadow-sm">
+                        <i class="fa-solid fa-trash me-1"></i> Xác Nhận Xóa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container-custom"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/admin/js/admin-core.js"></script>
+    <script src="/admin/js/admin-dashboard.js"></script>
+    <script src="/admin/js/admin-events.js"></script>
+    <script src="/admin/js/admin-extra.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            AdminApp.init();
+            AdminEvents.init();
+        });
+    </script>
+</body>
+</html>
