@@ -3,138 +3,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ thống Quản lý & Check-in Sự Kiện Chuyên Nghiệp</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Cổng Đăng Ký & Quản Lý Vé Sự Kiện Chuyên Nghiệp 2026</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6.5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        :root { --primary-color: #4f46e5; --secondary-color: #818cf8; }
-        body { background-color: #f3f4f6; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-        .navbar { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        .card-stats { border: none; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: transform 0.2s; }
-        .card-stats:hover { transform: translateY(-4px); }
-        .table-custom th { background-color: #1e293b !important; color: white; font-weight: 600; }
-        .badge-status { padding: 6px 12px; border-radius: 50rem; font-weight: 500; font-size: 0.85rem; }
-        .nav-pills .nav-link.active { background-color: var(--primary-color); font-weight: 600; }
-        .nav-pills .nav-link { color: #4b5563; font-weight: 500; }
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary-color: #818cf8;
+            --bg-color: #f3f4f6;
+            --dark-header: #1e293b;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+        /* Navbar Chuẩn */
+        .navbar-main {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 4px 15px -3px rgba(79, 70, 229, 0.25);
+        }
+
+        /* Thẻ thống kê */
+        .card-stats {
+            border: none;
+            border-radius: 14px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            background: #ffffff;
+        }
+        .card-stats:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08);
+        }
+
+        /* Table Header #1e293b */
+        .table-custom thead th {
+            background-color: var(--dark-header) !important;
+            color: #ffffff !important;
+            font-weight: 600;
+            padding: 0.95rem 1.25rem;
+            border: none;
+            font-size: 0.875rem;
+            letter-spacing: 0.03em;
+        }
+
+        .table-custom tbody td {
+            padding: 1rem 1.25rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        /* Status Badges */
+        .badge-status {
+            padding: 6px 14px;
+            border-radius: 50rem;
+            font-weight: 600;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .badge-upcoming { background-color: #e0f2fe; color: #0284c7; }
+        .badge-open { background-color: #dcfce7; color: #16a34a; }
+        .badge-ended { background-color: #f1f5f9; color: #64748b; }
+        .badge-soldout { background-color: #fee2e2; color: #dc2626; }
+
+        /* Nav Pills */
+        .nav-pills-custom .nav-link {
+            color: #475569;
+            font-weight: 600;
+            border-radius: 9999px;
+            padding: 0.65rem 1.5rem;
+            transition: all 0.2s ease;
+        }
+        .nav-pills-custom .nav-link.active {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+        }
+
+        /* Vé điện tử E-Ticket Styling */
+        .ticket-receipt-card {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 2px dashed #cbd5e1;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        .ticket-receipt-card::before, .ticket-receipt-card::after {
+            content: '';
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background-color: var(--bg-color);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .ticket-receipt-card::before { left: -13px; }
+        .ticket-receipt-card::after { right: -13px; }
+
+        .btn-primary-gradient {
+            background: linear-gradient(135deg, var(--primary-color), #4338ca);
+            border: none;
+            color: #ffffff;
+        }
+        .btn-primary-gradient:hover {
+            background: linear-gradient(135deg, #4338ca, #3730a3);
+            color: #ffffff;
+        }
     </style>
 </head>
 <body>
-    <!-- Navbar Đã Chỉnh Sửa: To hơn, Tiếng Việt và Căn giữa -->
-    <nav class="navbar navbar-dark py-3 mb-4">
-        <div class="container-fluid d-flex justify-content-center">
-            <a class="navbar-brand fw-bold fs-2 m-0 text-uppercase tracking-wide" href="#">
-                <i class="fa-solid fa-calendar-days me-2"></i> Hệ Thống Quản Lý Sự Kiện
+    <!-- Navbar Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-main py-3 mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3 text-uppercase d-flex align-items-center tracking-wide" href="/">
+                <i class="fa-solid fa-calendar-days me-2"></i> Hệ Thống Sự Kiện 2026
             </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-semibold active" href="#" onclick="switchMainTab('events'); return false;">
+                            <i class="fa-solid fa-list-ul me-1"></i> Danh Sách Sự Kiện
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-semibold" href="#" onclick="switchMainTab('lookup'); return false;">
+                            <i class="fa-solid fa-magnifying-glass me-1"></i> Tra Cứu Vé QR
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white fw-semibold" href="#" onclick="switchMainTab('checkin'); return false;">
+                            <i class="fa-solid fa-qrcode me-1"></i> Soát Vé Nhân Viên
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-light text-primary fw-bold rounded-pill px-3 py-2 shadow-sm" href="/admin/login">
+                            <i class="fa-solid fa-shield-halved me-1"></i> Cổng Quản Trị
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 
     <div class="container pb-5">
-        <!-- Dashboard Thống kê -->
+        <!-- Dashboard Thống kê thời gian thực từ PostgreSQL -->
         <div class="row g-3 mb-4">
             <div class="col-md-3">
-                <div class="card card-stats p-3 bg-white border-start border-4 border-primary">
-                    <div class="text-muted small fw-semibold">TỔNG SỰ KIỆN</div>
+                <div class="card card-stats p-3 border-start border-4 border-primary">
+                    <div class="text-muted small fw-semibold text-uppercase">TỔNG SỰ KIỆN</div>
                     <h3 class="fw-bold text-dark mb-0 mt-1" id="stat-total">0</h3>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card card-stats p-3 bg-white border-start border-4 border-success">
-                    <div class="text-muted small fw-semibold">VÉ ĐÃ PHÁT HÀNH</div>
+                <div class="card card-stats p-3 border-start border-4 border-success">
+                    <div class="text-muted small fw-semibold text-uppercase">VÉ ĐÃ PHÁT HÀNH</div>
                     <h3 class="fw-bold text-success mb-0 mt-1" id="stat-tickets">0</h3>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card card-stats p-3 bg-white border-start border-4 border-warning">
-                    <div class="text-muted small fw-semibold">TỔNG LƯỢT ĐĂNG KÝ</div>
+                <div class="card card-stats p-3 border-start border-4 border-warning">
+                    <div class="text-muted small fw-semibold text-uppercase">TỔNG LƯỢT ĐĂNG KÝ</div>
                     <h3 class="fw-bold text-warning mb-0 mt-1" id="stat-registrations">0</h3>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card card-stats p-3 bg-white border-start border-4 border-info">
-                    <div class="text-muted small fw-semibold">TỶ LỆ LẤP ĐẦY</div>
+                <div class="card card-stats p-3 border-start border-4 border-info">
+                    <div class="text-muted small fw-semibold text-uppercase">TỶ LỆ LẤP ĐẦY</div>
                     <h3 class="fw-bold text-info mb-0 mt-1" id="stat-rate">0%</h3>
                 </div>
             </div>
         </div>
 
-        <!-- Menu Tab -->
-        <ul class="nav nav-pills mb-4 bg-white p-2 rounded shadow-sm d-inline-flex" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active rounded-pill px-4" id="pills-events-tab" data-bs-toggle="pill" data-bs-target="#pills-events" type="button"><i class="fa-solid fa-list-check me-2"></i> Quản Lý Sự Kiện</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link rounded-pill px-4" id="pills-checkin-tab" data-bs-toggle="pill" data-bs-target="#pills-checkin" type="button"><i class="fa-solid fa-qrcode me-2"></i> Trạm Check-in Soát Vé</button>
-            </li>
-        </ul>
+        <!-- Menu Tabs Chức năng -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <ul class="nav nav-pills nav-pills-custom bg-white p-2 rounded-pill shadow-sm" id="clientTabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="tab-btn-events" onclick="switchMainTab('events')">
+                        <i class="fa-solid fa-calendar-check me-2"></i>Sự Kiện Đang Mở
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="tab-btn-lookup" onclick="switchMainTab('lookup')">
+                        <i class="fa-solid fa-ticket me-2"></i>Tra Cứu Vé Đã Đăng Ký
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="tab-btn-checkin" onclick="switchMainTab('checkin')">
+                        <i class="fa-solid fa-qrcode me-2"></i>Trạm Check-in (Nhân Viên)
+                    </button>
+                </li>
+            </ul>
 
-        <div class="tab-content" id="pills-tabContent">
-            <!-- TAB 1: QUẢN LÝ SỰ KIỆN -->
-            <div class="tab-pane fade show active" id="pills-events" role="tabpanel">
-                <div class="card border-0 shadow-sm p-3 mb-4 rounded-4">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-search text-muted"></i></span>
-                                <input type="text" id="searchInput" class="form-control border-start-0 bg-light" placeholder="Tìm kiếm tên sự kiện..." oninput="filterEvents()">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <select id="statusFilter" class="form-select bg-light" onchange="filterEvents()">
-                                <option value="all">🔍 Tất cả trạng thái</option>
-                                <option value="upcoming">⏳ Sắp diễn ra</option>
-                                <option value="open">🟢 Đang diễn ra</option>
-                                <option value="soldout">🔴 Hết vé</option>
-                                <option value="ended">🏁 Đã kết thúc</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 text-end">
-                            <button class="btn btn-primary w-100 fw-semibold rounded-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#createEventModal">
-                                <i class="fa-solid fa-plus me-1"></i> Tạo Sự Kiện
-                            </button>
+            <button class="btn btn-outline-primary rounded-pill px-3 fw-semibold" onclick="loadPublicEvents(true)">
+                <i class="fa-solid fa-rotate-right me-1"></i> Làm mới dữ liệu
+            </button>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB 1: DANH SÁCH SỰ KIỆN CÔNG KHAI            -->
+        <!-- ============================================== -->
+        <div id="section-events">
+            <!-- Thanh tìm kiếm & lọc -->
+            <div class="card border-0 shadow-sm p-3 mb-4 rounded-4 bg-white">
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-search text-muted"></i></span>
+                            <input type="text" id="searchInput" class="form-control border-start-0 bg-light" placeholder="Tìm kiếm tên sự kiện hoặc địa điểm tổ chức..." oninput="filterClientEvents()">
                         </div>
                     </div>
-                </div>
-
-                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-                    <div class="card-header bg-white py-3 border-0">
-                        <h5 class="mb-0 fw-bold text-dark"><i class="fa-solid fa-table-list me-2 text-primary"></i> Danh Sách Sự Kiện Hệ Thống</h5>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0 table-custom">
-                            <thead>
-                                <tr>
-                                    <th class="ps-4">ID</th>
-                                    <th>Tên Sự Kiện</th>
-                                    <th>Ngày Tổ Chức</th>
-                                    <th>Trạng Thái</th>
-                                    <th>Vé (Đã bán / Tổng)</th>
-                                    <th class="text-center pe-4">Thao Tác</th>
-                                </tr>
-                            </thead>
-                            <tbody id="eventTableBody" class="bg-white">
-                                <!-- Render JS -->
-                            </tbody>
-                        </table>
+                    <div class="col-md-4">
+                        <select id="statusFilter" class="form-select bg-light" onchange="filterClientEvents()">
+                            <option value="all">🔍 Tất cả trạng thái</option>
+                            <option value="upcoming">⏳ Sắp diễn ra</option>
+                            <option value="open">🟢 Đang diễn ra</option>
+                            <option value="soldout">🔴 Hết vé</option>
+                            <option value="ended">🏁 Đã kết thúc</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB 2: TRẠM CHECK-IN -->
-            <div class="tab-pane fade" id="pills-checkin" role="tabpanel">
-                <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        <div class="card border-0 shadow-sm p-4 rounded-4 text-center">
+            <!-- Bảng danh sách sự kiện -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                <div class="card-header bg-white py-3 border-0">
+                    <h5 class="mb-0 fw-bold text-dark">
+                        <i class="fa-solid fa-table-list me-2 text-primary"></i>Danh Sách Sự Kiện Công Khai
+                    </h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 table-custom">
+                        <thead>
+                            <tr>
+                                <th class="ps-4">ID</th>
+                                <th>Tên Sự Kiện & Banner</th>
+                                <th>Ngày & Giờ Tổ Chức</th>
+                                <th>Địa Điểm</th>
+                                <th>Trạng Thái</th>
+                                <th>Tình Trạng Vé</th>
+                                <th class="text-center pe-4">Đăng Ký</th>
+                            </tr>
+                        </thead>
+                        <tbody id="eventTableBody" class="bg-white">
+                            <!-- Render bằng JS từ PostgreSQL API -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB 2: TRA CỨU VÉ ĐÃ ĐĂNG KÝ                   -->
+        <!-- ============================================== -->
+        <div id="section-lookup" class="d-none">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm p-4 p-md-5 rounded-4 bg-white text-center">
+                        <div class="mb-3 text-primary">
+                            <i class="fa-solid fa-magnifying-glass-chart display-4"></i>
+                        </div>
+                        <h3 class="fw-bold text-dark">Tra Cứu Vé Điện Tử & Mã QR</h3>
+                        <p class="text-muted">Nhập mã vé được cấp khi đăng ký (hoặc Email và Số điện thoại) để xem lại vé, mã QR và trạng thái tham dự.</p>
+
+                        <form id="lookupForm" onsubmit="handleTicketLookup(event)" class="mt-4 text-start">
                             <div class="mb-3">
-                                <i class="fa-solid fa-qrcode text-primary display-3"></i>
+                                <label class="form-label fw-semibold">Cách 1: Nhập Mã Vé Của Bạn</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fa-solid fa-barcode text-muted"></i></span>
+                                    <input type="text" id="lookupCode" class="form-control" placeholder="VD: TK-2026-E1-ABCD1234">
+                                </div>
                             </div>
-                            <h3 class="fw-bold">Màn Hình Soát Vé Tại Cổng</h3>
-                            <p class="text-muted">Nhập mã vé điện tử hoặc dùng máy quét mã QR để check-in khách tham dự.</p>
-                            
-                            <div class="input-group mb-3 mt-3">
-                                <input type="text" id="ticketCodeInput" class="form-control form-control-lg" placeholder="Nhập mã vé (VD: TICKET-9842)...">
-                                <button class="btn btn-primary px-4 fw-bold" onclick="performCheckIn()"><i class="fa-solid fa-check-circle me-1"></i> Xác Nhận Check-in</button>
+                            <div class="text-center my-2 text-muted fw-bold small">— HOẶC —</div>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Cách 2: Email Đăng Ký</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="fa-regular fa-envelope text-muted"></i></span>
+                                        <input type="email" id="lookupEmail" class="form-control" placeholder="name@example.com">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Số Điện Thoại</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="fa-solid fa-phone text-muted"></i></span>
+                                        <input type="tel" id="lookupPhone" class="form-control" placeholder="0912345678">
+                                    </div>
+                                </div>
                             </div>
-                            <div id="checkinResult" class="mt-3"></div>
+                            <button type="submit" id="lookupBtn" class="btn btn-primary-gradient w-100 py-3 fw-bold rounded-3 shadow-sm">
+                                <i class="fa-solid fa-search me-1"></i> Tra Cứu Vé Ngay
+                            </button>
+                        </form>
+
+                        <div id="lookupResults" class="mt-4 text-start"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB 3: TRẠM SOÁT VÉ (BẢO VỆ PHÂN QUYỀN)       -->
+        <!-- ============================================== -->
+        <div id="section-checkin" class="d-none">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm p-4 p-md-5 rounded-4 bg-white text-center">
+                        <div class="mb-3 text-primary">
+                            <i class="fa-solid fa-qrcode display-4"></i>
+                        </div>
+                        <h3 class="fw-bold text-dark">Trạm Soát Vé Tại Cổng Sự Kiện</h3>
+                        <p class="text-muted">Khu vực dành cho Ban Tổ Chức & Nhân Viên soát vé có thẩm quyền.</p>
+
+                        <div id="staffAuthBox">
+                            <!-- Hiển thị form đăng nhập hoặc trạng thái phiên làm việc -->
                         </div>
                     </div>
                 </div>
@@ -142,310 +341,519 @@
         </div>
     </div>
 
-    <!-- Modal Đăng Ký Vé -->
+    <!-- ============================================== -->
+    <!-- MODAL ĐĂNG KÝ VÉ THAM GIA                      -->
+    <!-- ============================================== -->
     <div class="modal fade" id="registerModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 rounded-4 shadow">
                 <div class="modal-header bg-primary text-white rounded-top-4">
-                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-ticket me-2"></i> Đăng Ký Vé Tham Dự</h5>
+                    <h5 class="modal-title fw-bold">
+                        <i class="fa-solid fa-ticket me-2"></i>Đăng Ký Vé Tham Dự Sự Kiện
+                    </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4" id="modalBodyContent">
-                    <!-- JS Render -->
+                    <!-- Form do JS sinh động -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Tạo Sự Kiện Mới -->
-    <div class="modal fade" id="createEventModal" tabindex="-1">
+    <!-- ============================================== -->
+    <!-- MODAL HIỂN THỊ VÉ ĐIỆN TỬ & QR                 -->
+    <!-- ============================================== -->
+    <div class="modal fade" id="ticketSuccessModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 rounded-4 shadow">
-                <div class="modal-header bg-dark text-white rounded-top-4">
-                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-calendar-plus me-2"></i> Tạo Sự Kiện Mới</h5>
+            <div class="modal-content border-0 rounded-4 shadow overflow-hidden">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title fw-bold">
+                        <i class="fa-solid fa-circle-check me-2"></i>Đăng Ký Vé Thành Công!
+                    </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body p-4">
-                    <form id="eventForm" onsubmit="createEvent(event)">
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Tên Sự Kiện</label>
-                            <input type="text" id="newTitle" class="form-control" required placeholder="VD: Workshop AI 2026">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Ngày Tổ Chức</label>
-                            <input type="date" id="newDate" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Tổng Số Vé Phát Hành</label>
-                            <input type="number" id="newTotal" class="form-control" required placeholder="100">
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold rounded-3 shadow-sm">Lưu & Xuất Bản Sự Kiện</button>
-                    </form>
+                <div class="modal-body p-4 text-center" id="ticketReceiptBody">
+                    <!-- Render vé điện tử và QR -->
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary rounded-3" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary fw-bold rounded-3" onclick="window.print()">
+                        <i class="fa-solid fa-print me-1"></i> In Vé / Lưu PDF
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Sửa Sự Kiện -->
-    <div class="modal fade" id="editEventModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 rounded-4 shadow">
-                <div class="modal-header bg-warning text-dark rounded-top-4">
-                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-pen-to-square me-2"></i> Cập Nhật Sự Kiện</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <form id="editEventForm" onsubmit="submitEdit(event)">
-                        <input type="hidden" id="editId">
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Tên Sự Kiện</label>
-                            <input type="text" id="editTitle" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Ngày Tổ Chức</label>
-                            <input type="date" id="editDate" class="form-control" required>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 mb-3">
-                                <label class="form-label fw-semibold">Tổng Số Vé</label>
-                                <input type="number" id="editTotal" class="form-control" required>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <label class="form-label fw-semibold text-danger">Số Vé Đã Bán</label>
-                                <input type="number" id="editSold" class="form-control" required>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-warning w-100 py-2 fw-bold rounded-3 shadow-sm">Lưu Thay Đổi</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Bootstrap 5.3 Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script Bootstrap & Logic -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const defaultEvents = [
-            { id: 1, name: "Hội thảo Công nghệ Cloud & DevOps 2026", date: "2026-10-20", total: 150, sold: 14 },
-            { id: 2, name: "Lập Trình Web với React & Next.js 2026", date: "2026-02-25", total: 100, sold: 5 },
-            { id: 3, name: "Tọa Đàm: Xây Dựng Hệ Thống Microservices", date: "2026-11-01", total: 200, sold: 5 },
-            { id: 4, name: "Khóa Học AI & Machine Learning Cho Người Mới", date: "2026-10-12", total: 50, sold: 50 }
-        ];
+        // Trạng thái ứng dụng
+        let globalEvents = [];
 
-        let savedData = localStorage.getItem('eventManagementData');
-        let events = savedData ? JSON.parse(savedData) : defaultEvents;
+        // Chuyển Tab chính
+        function switchMainTab(tab) {
+            document.querySelectorAll('#clientTabs .nav-link').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('section-events').classList.add('d-none');
+            document.getElementById('section-lookup').classList.add('d-none');
+            document.getElementById('section-checkin').classList.add('d-none');
 
-        function saveToStorage() {
-            localStorage.setItem('eventManagementData', JSON.stringify(events));
-            updateDashboard();
+            if (tab === 'events') {
+                document.getElementById('tab-btn-events').classList.add('active');
+                document.getElementById('section-events').classList.remove('d-none');
+            } else if (tab === 'lookup') {
+                document.getElementById('tab-btn-lookup').classList.add('active');
+                document.getElementById('section-lookup').classList.remove('d-none');
+            } else if (tab === 'checkin') {
+                document.getElementById('tab-btn-checkin').classList.add('active');
+                document.getElementById('section-checkin').classList.remove('d-none');
+                checkStaffSession();
+            }
         }
 
-        const currentDate = "2026-10-14";
+        // Tải danh sách sự kiện từ API thật PostgreSQL
+        async function loadPublicEvents(notify = false) {
+            const tbody = document.getElementById('eventTableBody');
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center py-5 text-muted"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Đang tải sự kiện từ hệ thống PostgreSQL...</td></tr>';
 
-        function getEventStatus(ev) {
-            if (ev.sold >= ev.total) return { text: "Hết vé", class: "bg-danger text-white", type: "soldout" };
-            if (ev.date < currentDate) return { text: "Đã kết thúc", class: "bg-secondary text-white", type: "ended" };
-            if (ev.date === currentDate) return { text: "Đang diễn ra", class: "bg-success text-white", type: "open" };
-            return { text: "Sắp diễn ra", class: "bg-primary text-white", type: "upcoming" };
+            try {
+                const res = await fetch('/api/events');
+                const result = await res.json();
+
+                if (!res.ok || result.success === false) {
+                    throw new Error(result.error || 'Không thể tải sự kiện');
+                }
+
+                globalEvents = result.data || [];
+                updateClientDashboard();
+                renderEventTable(globalEvents);
+
+                if (notify) {
+                    alert('Đã đồng bộ dữ liệu sự kiện mới nhất từ hệ thống thành công!');
+                }
+            } catch (err) {
+                console.error('Fetch events error:', err);
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-5 text-danger"><i class="fa-solid fa-triangle-exclamation me-2"></i>Không thể kết nối CSDL: ${err.message}</td></tr>`;
+            }
         }
 
-        function updateDashboard() {
-            let totalEvents = events.length;
-            let totalTickets = events.reduce((sum, ev) => sum + ev.total, 0);
-            let totalSold = events.reduce((sum, ev) => sum + ev.sold, 0);
-            let fillRate = totalTickets > 0 ? ((totalSold / totalTickets) * 100).toFixed(2) : 0;
+        // Cập nhật thẻ thống kê
+        function updateClientDashboard() {
+            const totalEvents = globalEvents.length;
+            const totalTickets = globalEvents.reduce((sum, ev) => sum + parseInt(ev.total_tickets || 0, 10), 0);
+            const totalSold = globalEvents.reduce((sum, ev) => sum + parseInt(ev.tickets_sold || 0, 10), 0);
+            const fillRate = totalTickets > 0 ? ((totalSold / totalTickets) * 100).toFixed(1) : '0.0';
 
             document.getElementById('stat-total').innerText = totalEvents;
-            document.getElementById('stat-tickets').innerText = totalTickets;
-            document.getElementById('stat-registrations').innerText = totalSold;
+            document.getElementById('stat-tickets').innerText = totalTickets.toLocaleString('vi-VN');
+            document.getElementById('stat-registrations').innerText = totalSold.toLocaleString('vi-VN');
             document.getElementById('stat-rate').innerText = fillRate + "%";
         }
 
-        function renderTable(dataToRender) {
+        // Lấy thông tin trạng thái sự kiện
+        function getStatusInfo(ev) {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const evDateStr = ev.date ? new Date(ev.date).toISOString().split('T')[0] : '';
+            const sold = parseInt(ev.tickets_sold || 0, 10);
+            const total = parseInt(ev.total_tickets || 0, 10);
+
+            if (sold >= total) {
+                return { text: "Hết vé", class: "badge-soldout", type: "soldout", canRegister: false };
+            }
+            if (evDateStr < todayStr) {
+                return { text: "Đã kết thúc", class: "badge-ended", type: "ended", canRegister: false };
+            }
+            if (evDateStr === todayStr) {
+                return { text: "Đang diễn ra", class: "badge-open", type: "open", canRegister: true };
+            }
+            return { text: "Sắp diễn ra", class: "badge-upcoming", type: "upcoming", canRegister: true };
+        }
+
+        // Render bảng sự kiện
+        function renderEventTable(dataToRender) {
             const tbody = document.getElementById('eventTableBody');
             tbody.innerHTML = '';
-            
+
+            if (dataToRender.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-5 text-muted"><i class="fa-regular fa-folder-open me-2"></i>Không tìm thấy sự kiện nào phù hợp.</td></tr>';
+                return;
+            }
+
             dataToRender.forEach(ev => {
-                let status = getEventStatus(ev);
-                let disableBtn = (ev.sold >= ev.total || status.type === 'ended') ? 'disabled opacity-50' : '';
-                
+                const status = getStatusInfo(ev);
+                const sold = parseInt(ev.tickets_sold || 0, 10);
+                const total = parseInt(ev.total_tickets || 0, 10);
+                const remaining = Math.max(0, total - sold);
+                const dateStr = ev.date ? new Date(ev.date).toLocaleDateString('vi-VN') : 'Chưa xếp ngày';
+
+                const btnHtml = status.canRegister ? `
+                    <button class="btn btn-sm btn-primary fw-bold px-3 py-2 rounded-pill shadow-sm" onclick="openRegisterModal(${ev.id}, '${escapeHtml(ev.name)}')">
+                        <i class="fa-solid fa-ticket me-1"></i> Đăng Ký
+                    </button>
+                ` : `
+                    <button class="btn btn-sm btn-secondary fw-semibold px-3 py-2 rounded-pill opacity-50" disabled>
+                        Tạm Ngưng
+                    </button>
+                `;
+
                 tbody.innerHTML += `
                     <tr>
                         <td class="ps-4 fw-bold text-muted">#${ev.id}</td>
-                        <td class="fw-semibold text-dark">${ev.name}</td>
-                        <td><i class="fa-regular fa-calendar me-1 text-muted"></i> ${ev.date}</td>
-                        <td><span class="badge badge-status ${status.class}">${status.text}</span></td>
-                        <td><span class="fw-bold text-primary">${ev.sold}</span> / ${ev.total} vé</td>
-                        <td class="text-center pe-4">
-                            <button class="btn btn-sm btn-outline-primary me-1 rounded-2 ${disableBtn}" onclick="openRegisterModal('${ev.name}')" title="Đăng ký"><i class="fa-solid fa-ticket"></i> Đăng ký</button>
-                            <button class="btn btn-sm btn-outline-warning me-1 rounded-2" onclick="editEvent(${ev.id})" title="Sửa"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn btn-sm btn-outline-danger rounded-2" onclick="deleteEvent(${ev.id})" title="Xóa"><i class="fa-solid fa-trash"></i></button>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="${ev.image_url || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800'}" alt="${escapeHtml(ev.name)}" class="rounded-3 shadow-sm" style="width: 50px; height: 50px; object-fit: cover;">
+                                <div>
+                                    <div class="fw-bold text-dark fs-6">${escapeHtml(ev.name)}</div>
+                                    <div class="text-muted small text-truncate" style="max-width: 300px;">${escapeHtml(ev.description || 'Sự kiện chuyên sâu cập nhật xu hướng công nghệ hàng đầu năm 2026.')}</div>
+                                </div>
+                            </div>
                         </td>
+                        <td>
+                            <div class="fw-semibold text-dark"><i class="fa-regular fa-calendar me-1 text-primary"></i>${dateStr}</div>
+                            <div class="text-muted small"><i class="fa-regular fa-clock me-1"></i>${ev.event_time || '08:30'}</div>
+                        </td>
+                        <td>
+                            <div class="text-muted small"><i class="fa-solid fa-location-dot text-danger me-1"></i>${escapeHtml(ev.location || 'Trung tâm Hội nghị')}</div>
+                        </td>
+                        <td><span class="badge badge-status ${status.class}">${status.text}</span></td>
+                        <td>
+                            <div><b class="text-primary">${sold}</b> / ${total} vé</div>
+                            <div class="small text-muted">Còn lại: <b class="text-success">${remaining}</b> vé</div>
+                        </td>
+                        <td class="text-center pe-4">${btnHtml}</td>
                     </tr>
                 `;
             });
         }
 
-        function filterEvents() {
-            let keyword = document.getElementById('searchInput').value.toLowerCase();
-            let filterVal = document.getElementById('statusFilter').value;
+        // Lọc sự kiện theo từ khóa & trạng thái
+        function filterClientEvents() {
+            const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+            const filterVal = document.getElementById('statusFilter').value;
 
-            let filtered = events.filter(ev => {
-                let matchName = ev.name.toLowerCase().includes(keyword);
-                let status = getEventStatus(ev);
-                let matchStatus = (filterVal === 'all' || status.type === filterVal);
-                return matchName && matchStatus;
+            const filtered = globalEvents.filter(ev => {
+                const name = (ev.name || '').toLowerCase();
+                const loc = (ev.location || '').toLowerCase();
+                const matchKeyword = name.includes(keyword) || loc.includes(keyword);
+
+                const status = getStatusInfo(ev);
+                const matchStatus = (filterVal === 'all' || status.type === filterVal);
+
+                return matchKeyword && matchStatus;
             });
 
-            renderTable(filtered);
+            renderEventTable(filtered);
         }
 
-        function openRegisterModal(eventName) {
+        // Mở Modal Đăng Ký
+        function openRegisterModal(eventId, eventName) {
             document.getElementById('modalBodyContent').innerHTML = `
-                <form id="registerForm" onsubmit="submitRegistration(event, '${eventName}')">
+                <form id="publicRegisterForm" onsubmit="submitRegistration(event, ${eventId}, '${escapeHtml(eventName)}')">
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Sự kiện đã chọn</label>
-                        <input type="text" class="form-control bg-light" value="${eventName}" readonly>
+                        <input type="text" class="form-control bg-light fw-bold text-primary" value="${escapeHtml(eventName)}" readonly>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Họ và Tên</label>
-                        <input type="text" class="form-control" id="regName" required placeholder="Nguyễn Văn A">
+                        <label class="form-label fw-semibold">Họ và Tên <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="regName" required minlength="2" placeholder="Ví dụ: Nguyễn Văn An">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Email nhận vé QR</label>
+                        <label class="form-label fw-semibold">Email nhận vé điện tử & QR <span class="text-danger">*</span></label>
                         <input type="email" class="form-control" id="regEmail" required placeholder="name@example.com">
+                        <div class="form-text">Mã vé và thông tin xác thực sẽ được cấp qua email này.</div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Số điện thoại</label>
-                        <input type="text" class="form-control" id="regPhone" required placeholder="0912345678">
+                        <label class="form-label fw-semibold">Số điện thoại liên hệ</label>
+                        <input type="tel" class="form-control" id="regPhone" placeholder="Ví dụ: 0912345678">
                     </div>
-                    <button type="submit" class="btn btn-success w-100 py-2 fw-bold rounded-3 shadow-sm">Xác Nhận Đăng Ký</button>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Đơn vị / Tổ chức công tác</label>
+                        <input type="text" class="form-control" id="regOrg" placeholder="Ví dụ: Đại học Quốc gia, FPT, Viettel...">
+                    </div>
+                    <div id="regErrorMsg" class="alert alert-danger d-none py-2 small"></div>
+                    <button type="submit" id="btnSubmitReg" class="btn btn-primary-gradient w-100 py-2 fw-bold rounded-3 shadow-sm">
+                        <i class="fa-solid fa-check-circle me-1"></i> Xác Nhận Đăng Ký Vé
+                    </button>
                 </form>
             `;
-            var myModal = new bootstrap.Modal(document.getElementById('registerModal'));
-            myModal.show();
+            const modal = new bootstrap.Modal(document.getElementById('registerModal'));
+            modal.show();
         }
 
-        function submitRegistration(event, eventName) {
-            event.preventDefault();
-            let name = document.getElementById('regName').value;
-            
-            let ev = events.find(item => item.name === eventName);
-            if(ev) {
-                ev.sold += 1;
-                saveToStorage();
-                filterEvents();
-            }
+        // Gửi Đăng Ký lên API thật
+        async function submitRegistration(e, eventId, eventName) {
+            e.preventDefault();
+            const btn = document.getElementById('btnSubmitReg');
+            const errBox = document.getElementById('regErrorMsg');
+            errBox.classList.add('d-none');
 
-            document.getElementById('modalBodyContent').innerHTML = `
-                <div class="text-center py-3">
-                    <div class="text-success mb-3"><i class="fa-solid fa-circle-check fa-3x"></i></div>
-                    <h4 class="fw-bold text-success">Đăng Ký Thành Công!</h4>
-                    <p class="text-muted small">Vé điện tử của bạn đã được khởi tạo.</p>
-                    <div class="bg-light p-3 rounded-4 border my-3">
-                        <p class="mb-1 fw-bold text-dark">${eventName}</p>
-                        <p class="mb-1 text-muted small">Người tham dự: <b>${name}</b></p>
-                        <div class="my-2">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TICKET-${Math.floor(Math.random()*90000+10000)}" alt="QR Code" class="img-fluid rounded shadow-sm">
-                        </div>
-                        <span class="badge bg-dark">Mã vé: TICKET-${Math.floor(Math.random()*90000+10000)}</span>
+            const fullName = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const organization = document.getElementById('regOrg').value.trim();
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Đang tạo vé an toàn trên PostgreSQL...';
+
+            try {
+                const res = await fetch('/api/public/registrations', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ eventId, fullName, email, phone, organization })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok || data.success === false) {
+                    throw new Error(data.error || 'Đăng ký vé thất bại.');
+                }
+
+                // Ẩn modal đăng ký
+                bootstrap.Modal.getInstance(document.getElementById('registerModal')).hide();
+
+                // Hiển thị vé điện tử thành công kèm QR
+                showTicketSuccessReceipt(data.data);
+
+                // Tự động tải lại dữ liệu sự kiện để cập nhật số vé đã bán
+                loadPublicEvents();
+
+            } catch (err) {
+                console.error('Registration failed:', err);
+                errBox.innerText = err.message;
+                errBox.classList.remove('d-none');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-check-circle me-1"></i> Xác Nhận Đăng Ký Vé';
+            }
+        }
+
+        // Hiển thị biên lai vé QR
+        function showTicketSuccessReceipt(ticketData) {
+            const body = document.getElementById('ticketReceiptBody');
+            body.innerHTML = `
+                <div class="ticket-receipt-card p-4 mx-auto text-start mb-3" style="max-width: 420px;">
+                    <div class="text-center mb-3">
+                        <span class="badge bg-primary px-3 py-1 rounded-pill text-uppercase">VÉ ĐIỆN TỬ CHÍNH THỨC</span>
+                        <h5 class="fw-bold text-dark mt-2 mb-1">${escapeHtml(ticketData.eventName)}</h5>
+                        <p class="text-muted small mb-0"><i class="fa-regular fa-calendar me-1"></i>${new Date(ticketData.eventDate).toLocaleDateString('vi-VN')} (${ticketData.eventTime || '08:30'})</p>
                     </div>
-                    <button class="btn btn-primary w-100 fw-bold rounded-3" data-bs-dismiss="modal">Hoàn Tất</button>
+
+                    <div class="text-center py-2 bg-light rounded-3 my-3">
+                        <img src="${ticketData.qrUrl}" alt="Mã QR Vé" class="img-fluid rounded shadow-sm" style="width: 180px; height: 180px;">
+                        <div class="mt-2">
+                            <span class="badge bg-dark font-monospace fs-6 px-3 py-1">${ticketData.ticketCode}</span>
+                        </div>
+                    </div>
+
+                    <div class="small">
+                        <div class="d-flex justify-content-between py-1 border-bottom">
+                            <span class="text-muted">Người tham dự:</span>
+                            <span class="fw-bold">${escapeHtml(ticketData.attendeeName)}</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-1 border-bottom">
+                            <span class="text-muted">Email:</span>
+                            <span class="fw-semibold">${escapeHtml(ticketData.attendeeEmail)}</span>
+                        </div>
+                        ${ticketData.attendeePhone ? `
+                        <div class="d-flex justify-content-between py-1 border-bottom">
+                            <span class="text-muted">Điện thoại:</span>
+                            <span>${escapeHtml(ticketData.attendeePhone)}</span>
+                        </div>` : ''}
+                        <div class="d-flex justify-content-between py-1">
+                            <span class="text-muted">Địa điểm:</span>
+                            <span class="text-truncate ms-2" title="${escapeHtml(ticketData.eventLocation || '')}">${escapeHtml(ticketData.eventLocation || 'Trung tâm Hội nghị')}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-info border-0 py-2 small">
+                    <i class="fa-solid fa-circle-info me-1"></i> Vui lòng lưu mã vé hoặc chụp lại màn hình mã QR này để xuất trình tại cổng check-in.
                 </div>
             `;
+            const modal = new bootstrap.Modal(document.getElementById('ticketSuccessModal'));
+            modal.show();
         }
 
-        function performCheckIn() {
-            let code = document.getElementById('ticketCodeInput').value.trim();
-            let resultDiv = document.getElementById('checkinResult');
-            if(!code) {
-                resultDiv.innerHTML = `<div class="alert alert-warning py-2">Vui lòng nhập mã vé hợp lệ!</div>`;
+        // Tra cứu vé đã đăng ký
+        async function handleTicketLookup(e) {
+            e.preventDefault();
+            const btn = document.getElementById('lookupBtn');
+            const resultBox = document.getElementById('lookupResults');
+            resultBox.innerHTML = '';
+
+            const ticketCode = document.getElementById('lookupCode').value.trim();
+            const email = document.getElementById('lookupEmail').value.trim();
+            const phone = document.getElementById('lookupPhone').value.trim();
+
+            if (!ticketCode && (!email || !phone)) {
+                resultBox.innerHTML = '<div class="alert alert-warning border-0">Vui lòng cung cấp Mã vé HOẶC cả Email và Số điện thoại để tra cứu.</div>';
                 return;
             }
-            resultDiv.innerHTML = `
-                <div class="alert alert-success py-3 shadow-sm rounded-3">
-                    <i class="fa-solid fa-circle-check fa-lg me-2"></i> <b>Check-in thành công!</b> Vé <code>${code}</code> đã được xác thực lúc ${new Date().toLocaleTimeString()}.
-                </div>
-            `;
-            document.getElementById('ticketCodeInput').value = '';
-        }
 
-        function editEvent(id) {
-            let ev = events.find(item => item.id === id);
-            if(ev) {
-                document.getElementById('editId').value = ev.id;
-                document.getElementById('editTitle').value = ev.name;
-                document.getElementById('editDate').value = ev.date;
-                document.getElementById('editTotal').value = ev.total;
-                document.getElementById('editSold').value = ev.sold;
-                
-                var editModal = new bootstrap.Modal(document.getElementById('editEventModal'));
-                editModal.show();
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Đang tra cứu trên CSDL...';
+
+            try {
+                const params = new URLSearchParams();
+                if (ticketCode) params.set('ticketCode', ticketCode);
+                if (email) params.set('email', email);
+                if (phone) params.set('phone', phone);
+
+                const res = await fetch('/api/public/tickets/lookup?' + params.toString());
+                const data = await res.json();
+
+                if (!res.ok || data.success === false) {
+                    throw new Error(data.error || 'Không tìm thấy vé phù hợp.');
+                }
+
+                const tickets = data.data || [];
+                resultBox.innerHTML = `
+                    <div class="alert alert-success border-0 mb-3">
+                        <i class="fa-solid fa-check-circle me-1"></i> Tìm thấy <b>${tickets.length}</b> vé hợp lệ trong hệ thống:
+                    </div>
+                    <div class="row g-3">
+                        ${tickets.map(t => `
+                            <div class="col-md-6">
+                                <div class="card border p-3 rounded-4 shadow-sm bg-white h-100">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge bg-primary px-2 py-1">VÉ THAM DỰ</span>
+                                        <span class="badge ${t.ticketStatus === 'used' ? 'bg-success' : t.ticketStatus === 'cancelled' ? 'bg-danger' : 'bg-info'} px-2 py-1">
+                                            ${t.ticketStatus === 'used' ? 'Đã Check-in' : t.ticketStatus === 'cancelled' ? 'Đã Hủy' : 'Hợp Lệ'}
+                                        </span>
+                                    </div>
+                                    <h6 class="fw-bold text-dark mb-1">${escapeHtml(t.eventName)}</h6>
+                                    <p class="text-muted small mb-2"><i class="fa-regular fa-calendar me-1"></i>${new Date(t.eventDate).toLocaleDateString('vi-VN')} (${t.eventTime || '08:30'})</p>
+                                    <div class="text-center py-2 bg-light rounded-3 my-2">
+                                        <img src="${t.qrUrl}" alt="QR" class="img-fluid" style="width: 140px; height: 140px;">
+                                        <div class="mt-1 font-monospace fw-bold text-dark small">${t.ticketCode}</div>
+                                    </div>
+                                    <div class="small text-muted mt-2">
+                                        <div>Người nhận: <b>${escapeHtml(t.attendeeName)}</b></div>
+                                        <div>Email: <b>${escapeHtml(t.attendeeEmail)}</b></div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+            } catch (err) {
+                resultBox.innerHTML = `<div class="alert alert-danger border-0"><i class="fa-solid fa-circle-exclamation me-1"></i>${err.message}</div>`;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-search me-1"></i> Tra Cứu Vé Ngay';
             }
         }
 
-        function submitEdit(event) {
-            event.preventDefault();
-            let id = parseInt(document.getElementById('editId').value);
-            let ev = events.find(item => item.id === id);
-            if(ev) {
-                ev.name = document.getElementById('editTitle').value;
-                ev.date = document.getElementById('editDate').value;
-                ev.total = parseInt(document.getElementById('editTotal').value);
-                
-                let newSold = parseInt(document.getElementById('editSold').value);
-                if (newSold > ev.total) {
-                    alert("Lỗi: Số vé đã bán không được lớn hơn Tổng số vé!");
+        // Kiểm tra phiên làm việc nhân viên cho khu vực Soát vé
+        async function checkStaffSession() {
+            const container = document.getElementById('staffAuthBox');
+            container.innerHTML = '<div class="spinner-border spinner-border-sm text-primary my-3"></div> Đang kiểm tra quyền nhân viên...';
+
+            try {
+                const res = await fetch('/api/admin/auth/me');
+                if (res.status === 401) {
+                    container.innerHTML = `
+                        <div class="alert alert-warning border-0 p-4 text-start rounded-4 mt-3">
+                            <h5 class="fw-bold text-dark mb-2"><i class="fa-solid fa-lock text-warning me-2"></i>Khu Vực Yêu Cầu Quyền Nhân Viên</h5>
+                            <p class="text-muted mb-3">Bạn chưa đăng nhập với tài khoản Ban Tổ Chức / Quản Trị Viên. Khách hàng thông thường không được phép tự ý soát vé.</p>
+                            <a href="/admin/login" class="btn btn-primary fw-semibold rounded-3 px-4 shadow-sm">
+                                <i class="fa-solid fa-right-to-bracket me-1"></i> Đăng Nhập Nhân Viên Soát Vé
+                            </a>
+                        </div>
+                    `;
                     return;
                 }
-                ev.sold = newSold;
-                
-                saveToStorage();
 
-                var modal = bootstrap.Modal.getInstance(document.getElementById('editEventModal'));
-                modal.hide();
-                filterEvents();
-                
-                setTimeout(() => alert("Đã cập nhật thông tin sự kiện thành công!"), 300);
+                const data = await res.json();
+                if (data.success && data.user) {
+                    container.innerHTML = `
+                        <div class="alert alert-success border-0 p-3 rounded-4 text-start mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fa-solid fa-user-shield text-success me-2"></i>
+                                    Nhân viên trực cổng: <b>${escapeHtml(data.user.fullName || data.user.username)}</b> (${data.user.role})
+                                </div>
+                                <span class="badge bg-success">Đã Xác Thực</span>
+                            </div>
+                        </div>
+
+                        <form id="clientCheckinForm" onsubmit="handleStaffCheckin(event)" class="mt-3">
+                            <div class="input-group input-group-lg mb-3 shadow-sm rounded-3 overflow-hidden">
+                                <span class="input-group-text bg-light border-end-0"><i class="fa-solid fa-ticket text-primary"></i></span>
+                                <input type="text" class="form-control border-start-0" id="staffCheckinCode" placeholder="Nhập hoặc quét mã vé (VD: TK-2026-E1-ABCD1234)..." required autocomplete="off">
+                                <button class="btn btn-primary px-4 fw-bold" type="submit">
+                                    <i class="fa-solid fa-check me-1"></i> Check-in Vé
+                                </button>
+                            </div>
+                        </form>
+                        <div id="staffCheckinResult" class="mt-3 text-start"></div>
+                    `;
+                    setTimeout(() => {
+                        const input = document.getElementById('staffCheckinCode');
+                        if (input) input.focus();
+                    }, 200);
+                }
+            } catch (err) {
+                container.innerHTML = `<div class="alert alert-danger">Lỗi kiểm tra phiên làm việc: ${err.message}</div>`;
             }
         }
 
-        function deleteEvent(id) {
-            if(confirm("Bạn có chắc chắn muốn xóa sự kiện này không?")) {
-                events = events.filter(item => item.id !== id);
-                saveToStorage();
-                filterEvents();
-                setTimeout(() => alert("Đã xóa thành công!"), 300);
+        // Thực hiện Check-in qua API chuẩn /api/admin/checkin
+        async function handleStaffCheckin(e) {
+            e.preventDefault();
+            const input = document.getElementById('staffCheckinCode');
+            const resultBox = document.getElementById('staffCheckinResult');
+            const ticketCode = input.value.trim();
+
+            if (!ticketCode) return;
+
+            resultBox.innerHTML = '<div class="text-muted"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Đang xác thực trên CSDL...</div>';
+
+            try {
+                const res = await fetch('/api/admin/checkin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ticketCode })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok || data.success === false) {
+                    throw new Error(data.error || 'Check-in thất bại.');
+                }
+
+                resultBox.innerHTML = `
+                    <div class="alert alert-success border-0 p-3 rounded-4 shadow-sm">
+                        <div class="fw-bold fs-5 text-success mb-1"><i class="fa-solid fa-circle-check me-2"></i>VÉ HỢP LỆ — CHECK-IN THÀNH CÔNG!</div>
+                        <div>Mã vé: <code class="fw-bold">${ticketCode}</code></div>
+                        <div>Người tham dự: <b>${escapeHtml(data.ticket ? data.ticket.attendee_name : '')}</b></div>
+                        <div>Sự kiện: <b>${escapeHtml(data.ticket ? data.ticket.event_name : '')}</b></div>
+                    </div>
+                `;
+                input.value = '';
+                input.focus();
+
+            } catch (err) {
+                resultBox.innerHTML = `
+                    <div class="alert alert-danger border-0 p-3 rounded-4 shadow-sm">
+                        <div class="fw-bold text-danger mb-1"><i class="fa-solid fa-circle-xmark me-2"></i>TỪ CHỐI CHECK-IN:</div>
+                        <div>${err.message}</div>
+                    </div>
+                `;
+                input.select();
             }
         }
 
-        function createEvent(event) {
-            event.preventDefault();
-            let title = document.getElementById('newTitle').value;
-            let date = document.getElementById('newDate').value;
-            let total = parseInt(document.getElementById('newTotal').value);
-            
-            let newId = events.length > 0 ? Math.max(...events.map(e => e.id)) + 1 : 1;
-
-            events.push({
-                id: newId,
-                name: title,
-                date: date,
-                total: total,
-                sold: 0
-            });
-            
-            saveToStorage();
-            filterEvents();
-
-            var modal = bootstrap.Modal.getInstance(document.getElementById('createEventModal'));
-            modal.hide();
-            document.getElementById('eventForm').reset();
-            setTimeout(() => alert("Thêm sự kiện mới thành công!"), 300);
+        function escapeHtml(str) {
+            return String(str ?? '').replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[c]));
         }
 
-        updateDashboard();
-        renderTable(events);
+        // Khởi động khi tải trang
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPublicEvents();
+        });
     </script>
 </body>
 </html>

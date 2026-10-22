@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập Quản Trị Hệ Thống - Admin Portal</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --brand-primary: #4f46e5;
+            --brand-secondary: #06b6d4;
+            --brand-dark: #0f172a;
+            --brand-surface: rgba(30, 41, 59, 0.7);
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 20% 20%, #1e1b4b 0%, #0f172a 50%, #020617 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            color: #f8fafc;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Hiệu ứng nền ánh sáng động */
+        .glow-sphere {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(6, 182, 212, 0.05) 70%, transparent 100%);
+            filter: blur(60px);
+            pointer-events: none;
+            z-index: 0;
+            animation: pulseGlow 8s infinite alternate ease-in-out;
+        }
+        .glow-1 { top: -100px; left: -100px; }
+        .glow-2 { bottom: -120px; right: -120px; animation-delay: -4s; }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.9) translate(0, 0); opacity: 0.6; }
+            100% { transform: scale(1.15) translate(30px, 30px); opacity: 0.9; }
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.85rem;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 9999px;
+            color: #818cf8;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .form-control {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(30, 41, 59, 0.95);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+            color: #ffffff;
+        }
+
+        .form-control::placeholder {
+            color: #64748b;
+        }
+
+        .input-icon-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+
+        .form-control:focus + .input-icon {
+            color: #818cf8;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0;
+        }
+        .password-toggle:hover { color: #f8fafc; }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+            border: none;
+            color: white;
+            padding: 0.85rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 20px -3px rgba(79, 70, 229, 0.45);
+            color: white;
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .alert-custom {
+            border-radius: 0.75rem;
+            padding: 0.85rem 1rem;
+            font-size: 0.875rem;
+            border: none;
+            display: none;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #6ee7b7;
+        }
+
+        .footer-note {
+            color: #64748b;
+            font-size: 0.775rem;
+            text-align: center;
+            margin-top: 1.75rem;
+            line-height: 1.5;
+        }
+
+        .client-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .client-link:hover { color: #818cf8; }
+    </style>
+</head>
+<body>
+    <div class="glow-sphere glow-1"></div>
+    <div class="glow-sphere glow-2"></div>
+
+    <div class="login-card">
+        <div class="text-center">
+            <div class="brand-badge">
+                <i class="fa-solid fa-shield-halved"></i> Cổng Quản Trị Hệ Thống
+            </div>
+            <h2 class="fw-bold mb-1 text-white">Đăng Nhập Admin</h2>
+            <p class="text-secondary small mb-4">Hệ thống Quản lý Sự kiện & Check-in Thông minh</p>
+        </div>
+
+        <div id="alertBox" class="alert-custom mb-3">
+            <i class="fa-solid fa-circle-exclamation me-1" id="alertIcon"></i>
+            <span id="alertMsg"></span>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="mb-3">
+                <label class="form-label text-light small fw-semibold">Tên đăng nhập / Email</label>
+                <div class="input-icon-wrapper">
+                    <input type="text" id="username" class="form-control" placeholder="Nhập tài khoản quản trị..." required autocomplete="username" autofocus>
+                    <i class="fa-solid fa-user input-icon"></i>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label text-light small fw-semibold mb-0">Mật khẩu</label>
+                </div>
+                <div class="input-icon-wrapper">
+                    <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu..." required autocomplete="current-password">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <button type="button" class="password-toggle" onclick="togglePasswordVisibility()" title="Ẩn/Hiện mật khẩu">
+                        <i class="fa-regular fa-eye" id="toggleIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" id="btnSubmit" class="btn btn-submit w-100">
+                <span id="btnText"><i class="fa-solid fa-right-to-bracket me-1"></i> Đăng Nhập Quản Trị</span>
+                <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+            </button>
+        </form>
+
+        <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top border-secondary border-opacity-25">
+            <a href="/" class="client-link">
+                <i class="fa-solid fa-arrow-left"></i> Về Website Công Khai
+            </a>
+            <span class="badge bg-dark text-secondary border border-secondary border-opacity-25">Admin v2.0</span>
+        </div>
+
+        <div class="footer-note">
+            <i class="fa-solid fa-lock me-1"></i> Truy cập được giám sát & ghi nhật ký bảo mật.<br>
+            Không chia sẻ thông tin tài khoản cho người không có phận sự.
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('password');
+            const icon = document.getElementById('toggleIcon');
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                pwdInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function showAlert(msg, isError = true) {
+            const alertBox = document.getElementById('alertBox');
+            const alertMsg = document.getElementById('alertMsg');
+            const alertIcon = document.getElementById('alertIcon');
+
+            alertBox.className = 'alert-custom mb-3 ' + (isError ? 'alert-error' : 'alert-success');
+            alertIcon.className = isError ? 'fa-solid fa-circle-exclamation me-1' : 'fa-solid fa-circle-check me-1';
+            alertMsg.innerText = msg;
+            alertBox.style.display = 'block';
+        }
+
+        function hideAlert() {
+            document.getElementById('alertBox').style.display = 'none';
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            hideAlert();
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const btnSubmit = document.getElementById('btnSubmit');
+            const btnText = document.getElementById('btnText');
+            const btnSpinner = document.getElementById('btnSpinner');
+
+            if (!username || !password) {
+                showAlert('Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu!');
+                return;
+            }
+
+            // Set loading
+            btnSubmit.disabled = true;
+            btnText.classList.add('d-none');
+            btnSpinner.classList.remove('d-none');
+
+            try {
+                const response = await fetch('/api/admin/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showAlert('Đăng nhập thành công! Đang chuyển hướng...', false);
+                    setTimeout(() => {
+                        window.location.href = '/admin';
+                    }, 600);
+                } else {
+                    let errMsg = data.error || 'Đăng nhập không thành công.';
+                    if (data.attemptsRemaining !== undefined) {
+                        errMsg += ` (Còn lại ${data.attemptsRemaining} lần thử)`;
+                    }
+                    showAlert(errMsg, true);
+                    btnSubmit.disabled = false;
+                    btnText.classList.remove('d-none');
+                    btnSpinner.classList.add('d-none');
+                }
+            } catch (err) {
+                showAlert('Lỗi kết nối máy chủ: ' + err.message, true);
+                btnSubmit.disabled = false;
+                btnText.classList.remove('d-none');
+                btnSpinner.classList.add('d-none');
+            }
+        }
+    </script>
+</body>
+</html>
