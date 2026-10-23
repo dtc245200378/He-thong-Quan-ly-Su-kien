@@ -17,6 +17,8 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:?missing}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:?missing}
+    ports:
+      - "5050:80"
 
   webapp:
     image: node:18-alpine
@@ -29,9 +31,11 @@ services:
     expose:
       - "3000"
     environment:
+      COOKIE_SECURE: "true"
+      TRUST_PROXY: "true"
+      CUSTOMER_JWT_SECRET: ${CUSTOMER_JWT_SECRET:?Missing customer secret}
       DATABASE_URL: ${DATABASE_URL:?missing}
       JWT_SECRET: ${JWT_SECRET:?JWT_SECRET_missing}
-
   nginx:
     image: nginx:alpine
     container_name: event_management_system-nginx-1
@@ -44,7 +48,42 @@ services:
     depends_on:
       - webapp
 
+  cadvisor:
+    image: ghcr.io/google/cadvisor:v0.60.5
+    restart: unless-stopped
+    privileged: false
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    expose:
+      - "8080"
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:v0.16.0
+    restart: unless-stopped
+    env_file:
+      - ./.local/postgres-exporter.env
+    depends_on:
+      - postgres
+    expose:
+      - "9187"
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:1.4.2
+    restart: unless-stopped
+    command:
+      - "--nginx.scrape-uri=http://nginx:8080/stub_status"
+    depends_on:
+      - nginx
+    expose:
+      - "9113"
+
   node-exporter:
+
     image: prom/node-exporter:latest
     container_name: event_management_system-node-exporter-1
     restart: unless-stopped
